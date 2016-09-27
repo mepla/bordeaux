@@ -1,0 +1,49 @@
+import requests
+import bs4
+from bs4.element import Tag
+from main.data_types.item import Item
+from main.resources.searchers.base_searcher import BaseSearcher
+
+
+class AfrangSecondHandSearcher(BaseSearcher):
+
+    def start_search(self):
+        results = {}
+
+        search_queries = list(self.search_phrases)
+
+        for qry in search_queries:
+            result = requests.get('http://www.afrangdigital.com/AjaxSearchUsed.aspx?Query={}'.format(qry))
+            soup = bs4.BeautifulSoup(result.content, 'html.parser')
+            all_divs = soup.find_all('div')
+            for div in all_divs:
+                g = self.create_item(div)
+                if g and g.link not in results:
+                    results[g.link] = g
+
+        for i, res in enumerate(results.values()):
+            print('{}. {}'.format(i+1, res))
+
+    def create_item(self, div):
+        g = Item()
+        try:
+            a_tag = div.find('div', {'class': 'name-pro2'}).h2.a
+            assert isinstance(a_tag, Tag)
+            tag_str = str(a_tag)
+            link = tag_str[tag_str.index('"')+1:tag_str.rindex('"')]
+            g.link = 'http://www.afrangdigital.com' + link
+
+            title = tag_str[tag_str.index('">')+2:-4]
+            g.title = title
+            g.name = title
+
+            price_tag = div.find('span', {'class': 'price-pro'}).price
+            price_str = str(price_tag)
+            g.view_price = price_str
+            price_str = price_str.split(' ')[0].replace('<price>', '').replace(',', '')
+            g.price = price_str
+
+            return g
+        except Exception as exc:
+            # print('Could not parse div: {} -> {}\n\n'.format(div, exc))
+            pass
