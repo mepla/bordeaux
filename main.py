@@ -1,7 +1,9 @@
 import logging
 
-from main.resources.searchers.afrang_second_hand import AfrangSecondHandSearcher
-from main.resources.searchers.digikala_searcher import DigikalaSearcher
+from main.resources.controllers.database_controller import DatabaseController
+from main.resources.controllers.search_controller import SearchController
+from main import config
+from main.store.database_drivers import MongoDatabase
 
 if __name__ == '__main__':
     logger = logging.getLogger()
@@ -16,6 +18,8 @@ if __name__ == '__main__':
     logger.addHandler(handler)
     logger.setLevel('DEBUG')
 
-    ar = AfrangSecondHandSearcher(base_url='http://www.afrangdigital.com', phrases=['fujinon', 'fujifilm', 'xf 5', 'xf 1', 'xf 6', 'xf 9'])
-    dk = DigikalaSearcher(base_url='http://search.digikala.com/api/search', phrases=['ps4_games'])
-    dk.start_search()
+    mongo = MongoDatabase()
+    dc = DatabaseController(mongo)
+
+    sc = SearchController(config.get('searchers'), dc)
+    sc.start_search()

@@ -22,7 +22,7 @@ class DigikalaSearcher(BaseSearcher):
         }
 
         for cat in search_queries:
-            if cat not in search_queries:
+            if cat not in categories:
                 logging.warn('There is no defined category in Digikala for: {}, Skipping...'.format(cat))
                 continue
 
@@ -32,16 +32,19 @@ class DigikalaSearcher(BaseSearcher):
             if 200 <= result.status_code < 300:
                 item_docs = result.json().get('hits').get('hits')
                 for item_doc in item_docs:
-                    results.append(self.create_item(item_doc.get('_source')))
+                    results.append(self.create_item(item_doc.get('_source'), cat, search_url))
             else:
                 logging.debug('DK searching for {}: ({})\n{}'.format(cat, result.status_code, result.raw))
 
-        for res in results:
-            print str(res)
+        return results
 
-    def create_item(self, item_doc):
+    def create_item(self, item_doc, search_phrase=None, search_url=None):
         g = Item()
         try:
+            g.shop = 'digikala'
+            g.search_phrase = search_phrase
+            g.search_url = search_url
+
             g.price = item_doc.get('MinPrice')
             g.view_price = item_doc.get('MaxPrice')
             try:

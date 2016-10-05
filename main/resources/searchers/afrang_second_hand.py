@@ -1,3 +1,5 @@
+import os
+
 import requests
 import bs4
 from bs4.element import Tag
@@ -8,21 +10,21 @@ from main.resources.searchers.base_searcher import BaseSearcher
 class AfrangSecondHandSearcher(BaseSearcher):
 
     def start_search(self):
-        results = {}
+        results = []
 
         search_queries = list(self.search_phrases)
 
         for qry in search_queries:
-            result = requests.get('http://www.afrangdigital.com/AjaxSearchUsed.aspx?Query={}'.format(qry))
+            search_url = '{}?Query={}'.format(self.base_url, qry)
+            result = requests.get(search_url)
             soup = bs4.BeautifulSoup(result.content, 'html.parser')
             all_divs = soup.find_all('div')
             for div in all_divs:
                 g = self.create_item(div)
                 if g and g.link not in results:
-                    results[g.link] = g
+                    results.append(g)
 
-        for i, res in enumerate(results.values()):
-            print('{}. {}'.format(i+1, res))
+        return results
 
     def create_item(self, div):
         g = Item()

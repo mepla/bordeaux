@@ -15,6 +15,11 @@ class Item():
         self.image_link = None
         self.is_read = False
         self.id = None
+        self.search_phrase = None
+        self.search_url = None
+        self.shop = None
+        self.last_update = None
+        self.addition_date = None
 
         if data:
             attr_dict = dict(self.__dict__)
