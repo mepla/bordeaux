@@ -12,6 +12,9 @@ class Item():
         self.owner_details = None
         self.name = None
         self.description = None
+        self.image_link = None
+        self.is_read = False
+        self.id = None
 
         if data:
             attr_dict = dict(self.__dict__)
