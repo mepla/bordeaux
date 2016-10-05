@@ -1,13 +1,16 @@
 import importlib
 
 from main.resources.controllers.database_controller import DatabaseController
+from main.resources.controllers.notification_controller import NotificationControllerBase
 
 
 class SearchController(object):
-    def __init__(self, searchers_dict, database_controller):
+    def __init__(self, searchers_dict, database_controller, notification_controller):
         self.searchers = searchers_dict
         assert isinstance(database_controller, DatabaseController)
         self.database_controller = database_controller
+        assert issubclass(notification_controller.__class__, NotificationControllerBase)
+        self.notification_controller = notification_controller
 
     def start_search(self):
         aggregate_results = {}
@@ -21,5 +24,10 @@ class SearchController(object):
 
             aggregate_results[searcher_name] = instance_results
 
+        all_new_items = []
         for name, result_array in aggregate_results.items():
-            self.database_controller.analayze_and_save(result_array)
+            new_items = self.database_controller.analayze_and_save(result_array)
+            all_new_items.extend(new_items)
+
+        if len(all_new_items) > 0:
+            self.notification_controller.notify_new_items(all_new_items)

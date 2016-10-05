@@ -10,6 +10,7 @@ class DatabaseController(object):
         self.db = items_db
 
     def analayze_and_save(self, array_of_items):
+        new_items = []
         for item in array_of_items:
             item.id = base64(item.link)
             item.last_update = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
@@ -22,4 +23,6 @@ class DatabaseController(object):
             except (DatabaseRecordNotFound, DatabaseEmptyResult):
                 item.addition_date = item.last_update
                 self.db.save(item.to_json(), 'item')
+                new_items.append(item)
 
+        return new_items
