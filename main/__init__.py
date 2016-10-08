@@ -11,7 +11,14 @@ config = {
                 'class': 'DigikalaSearcher',
                 'module': 'main.resources.searchers.digikala_searcher',
                 'base_url': 'http://search.digikala.com/api/search',
-                'phrases': ['ps4_games']
+                'phrases': ['ps4_games'],
+                'phrase_details': {
+                    'ps4_games': {
+                        'category': 'c5609',
+                        'type': '4801'
+                    }
+                }
+
             },
             'afrang': {
                 'enabled': False,

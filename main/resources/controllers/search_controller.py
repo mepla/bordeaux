@@ -22,7 +22,7 @@ class SearchController(object):
                 continue
             module = importlib.import_module(searcher_data.get('module'))
             class_ = getattr(module, searcher_data.get('class'))
-            instance = class_(searcher_data.get('base_url'), searcher_data.get('phrases'))
+            instance = class_(searcher_data.get('base_url'), searcher_data.get('phrases'), searcher_data)
             instance_results = instance.start_search()
 
             aggregate_results[searcher_name] = instance_results

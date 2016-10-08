@@ -14,12 +14,7 @@ class DigikalaSearcher(BaseSearcher):
         results = []
         search_queries = list(self.search_phrases)
 
-        categories = {
-            'ps4_games': {
-                'category': 'c5609',
-                'type': '4801'
-            }
-        }
+        categories = self.searcher_conf.get('phrase_details')
 
         for cat in search_queries:
             if cat not in categories:
