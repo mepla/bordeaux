@@ -39,13 +39,23 @@ class DocumentDatabaseBase(object):
 
 
 class MongoDatabase(DocumentDatabaseBase):
-    def __init__(self, host='localhost', port=27017, db='items'):
+    def __init__(self, mongo_conf):
+        host = mongo_conf.get('server', 'localhost')
+        port = mongo_conf.get('port', 27017)
+        db = mongo_conf.get('db', 'items')
+        username = mongo_conf.get('username')
+        passw = mongo_conf.get('password')
 
         self._mongo_client = MongoClient(host, port)
+
         if db == 'items':
             self._mongo_db = self._mongo_client.items
         else:
             raise DatabaseNotFound('The database you requested was not found: {}'.format(db))
+
+        if username is not None:
+            x = self._mongo_db.authenticate(username, passw, source='admin')
+            pass
 
     def save(self, doc, doc_type, multiple=False):
         if not doc_type:

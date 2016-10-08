@@ -1,4 +1,10 @@
 config = {
+    'database': {
+        'mongo': {
+            'server': '185.99.214.188',
+            'port': 27017
+        }
+    },
     'searchers': {
             'digikala': {
                 'enabled': True,

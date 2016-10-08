@@ -19,7 +19,7 @@ if __name__ == '__main__':
     logger.addHandler(handler)
     logger.setLevel('DEBUG')
 
-    mongo = MongoDatabase()
+    mongo = MongoDatabase(config.get('database').get('mongo'))
     dc = DatabaseController(mongo)
 
     en = EmailNotifier(config.get('notifiers').get('email'))
