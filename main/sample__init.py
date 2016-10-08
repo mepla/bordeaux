@@ -1,14 +1,12 @@
 config = {
     'searchers': {
             'digikala': {
-                'enabled': True,
                 'class': 'DigikalaSearcher',
                 'module': 'main.resources.searchers.digikala_searcher',
                 'base_url': 'http://search.digikala.com/api/search',
                 'phrases': ['ps4_games']
             },
             'afrang': {
-                'enabled': False,
                 'class': 'AfrangSecondHandSearcher',
                 'module': 'main.resources.searchers.afrang_second_hand',
                 'base_url': 'http://www.afrangdigital.com/AjaxSearchUsed.aspx',

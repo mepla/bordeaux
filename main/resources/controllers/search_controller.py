@@ -1,4 +1,5 @@
 import importlib
+import logging
 
 from main.resources.controllers.database_controller import DatabaseController
 from main.resources.controllers.notification_controller import NotificationControllerBase
@@ -15,12 +16,14 @@ class SearchController(object):
     def start_search(self):
         aggregate_results = {}
         for searcher_name, searcher_data in self.searchers.items():
+            enabled = searcher_data.get('enabled')
+            if enabled is not True:
+                logging.debug('Searcher `{}` is disabled, skipping...'.format(searcher_name))
+                continue
             module = importlib.import_module(searcher_data.get('module'))
             class_ = getattr(module, searcher_data.get('class'))
             instance = class_(searcher_data.get('base_url'), searcher_data.get('phrases'))
             instance_results = instance.start_search()
-            for i in instance_results:
-                print str(i)
 
             aggregate_results[searcher_name] = instance_results
 

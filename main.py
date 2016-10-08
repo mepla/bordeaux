@@ -1,7 +1,7 @@
 import logging
 
 from main.resources.controllers.database_controller import DatabaseController
-from main.resources.controllers.notification_controller import NotificationController
+from main.resources.controllers.notification_controller import NotificationController, EmailNotifier, LogNotifier
 from main.resources.controllers.search_controller import SearchController
 from main import config
 from main.store.database_drivers import MongoDatabase
@@ -21,7 +21,11 @@ if __name__ == '__main__':
 
     mongo = MongoDatabase()
     dc = DatabaseController(mongo)
-    nc = NotificationController()
+
+    en = EmailNotifier(config.get('notifiers').get('email'))
+    ln = LogNotifier()
+
+    nc = NotificationController([ln, en])
 
     sc = SearchController(config.get('searchers'), dc, nc)
     sc.start_search()

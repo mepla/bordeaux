@@ -1,3 +1,6 @@
+import json
+
+
 class Item():
 
     def __init__(self, data=None):
@@ -28,16 +31,33 @@ class Item():
                     self.__dict__[attr_key] = data[attr_key]
                     # setattr(self, attr_key, data[attr_key])
 
-    def to_json(self):
-        json_data = {}
-        attr_dict = dict(self.__dict__)
-        for attr_key, attr_value in attr_dict.items():
-            json_data[attr_key] = attr_value
+    def to_json(self, summarize=False):
+        if summarize is False:
+            json_data = {}
+            attr_dict = dict(self.__dict__)
+            for attr_key, attr_value in attr_dict.items():
+                json_data[attr_key] = attr_value
+        else:
+            json_data = {
+                'name': self.name,
+                'price': self.price,
+                'link': self.link,
+                'addition_date': self.addition_date
+            }
 
         return json_data
 
-    def __str__(self):
-        return str(self.to_json())
+    def to_string(self, pretty=False, summarize=False):
+        return self.__str__(pretty=pretty, summarize=summarize)
+
+    def __str__(self, pretty=False, summarize=False):
+        if pretty is True:
+            return json.dumps(self.to_json(summarize=summarize),
+                              sort_keys=True,
+                              indent=2,
+                              separators=(',', ': '))
+        else:
+            return str(self.to_json())
 
 
 if __name__ == '__main__':
