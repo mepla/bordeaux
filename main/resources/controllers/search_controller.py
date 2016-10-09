@@ -28,9 +28,14 @@ class SearchController(object):
             aggregate_results[searcher_name] = instance_results
 
         all_new_items = []
+        all_price_changes = []
         for name, result_array in aggregate_results.items():
-            new_items = self.database_controller.analayze_and_save(result_array)
+            new_items, price_change_items = self.database_controller.analayze_and_save(result_array)
             all_new_items.extend(new_items)
+            all_price_changes.extend(price_change_items)
 
         if len(all_new_items) > 0:
             self.notification_controller.notify_new_items(all_new_items)
+
+        if len(all_price_changes) > 0:
+            self.notification_controller.notify_price_change(price_change_items)

@@ -11,11 +11,17 @@ class NotificationController(NotificationControllerBase):
         self._notifiers = notifiers
 
     def notify_new_items(self, new_items):
-        map(lambda x: x.notify(new_items), self._notifiers)
+        map(lambda x: x.notify_new(new_items), self._notifiers)
+
+    def notify_price_change(self, price_change_items):
+        map(lambda x: x.notify_change_price(price_change_items), self._notifiers)
 
 
 class NotifierBase(object):
-    def notify(self, items):
+    def notify_new(self, items):
+        pass
+
+    def notify_change_price(self, items):
         pass
 
 
@@ -23,8 +29,13 @@ class LogNotifier(NotifierBase):
     def __init__(self):
         pass
 
-    def notify(self, items):
+    def notify_new(self, items):
         logging.info('There are {} new items:'.format(len(items)))
+        body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
+        logging.info(body)
+
+    def notify_change_price(self, items):
+        logging.info('{} items has changed in price:'.format(len(items)))
         body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
         logging.info(body)
 
@@ -45,6 +56,10 @@ class EmailNotifier(NotifierBase):
         send_resp = server.sendmail(self._addr, to, body)
         server.quit()
 
-    def notify(self, items):
+    def notify_new(self, items):
         body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
         self._send_mail(self._to, 'New Items', body)
+
+    def notify_change_price(self, items):
+        body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
+        self._send_mail(self._to, 'Price Change', body)

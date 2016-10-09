@@ -5,6 +5,7 @@ class Item():
 
     def __init__(self, data=None):
         self.price = None
+        self.price_history = []
         self.view_price = None
         self.is_second_hand = None
         self.creation_date = None
@@ -42,7 +43,9 @@ class Item():
                 'name': self.name,
                 'price': self.price,
                 'link': self.link,
-                'addition_date': self.addition_date
+                'addition_date': self.addition_date,
+                'price_history': self.price_history,
+                'search_phrase': self.search_phrase
             }
 
         return json_data
