@@ -11,11 +11,15 @@ config = {
                 'class': 'DigikalaSearcher',
                 'module': 'main.resources.searchers.digikala_searcher',
                 'base_url': 'http://search.digikala.com/api/search',
-                'phrases': ['ps4_games'],
+                'phrases': ['ps4_games', 'camera_flash'],
                 'phrase_details': {
                     'ps4_games': {
                         'category': 'c5609',
                         'type': '4801'
+                    },
+                    'camera_flash': {
+                        'category': 'c108',
+                        'type': ''
                     }
                 }
 
