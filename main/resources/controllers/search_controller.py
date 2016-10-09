@@ -38,4 +38,4 @@ class SearchController(object):
             self.notification_controller.notify_new_items(all_new_items)
 
         if len(all_price_changes) > 0:
-            self.notification_controller.notify_price_change(price_change_items)
+            self.notification_controller.notify_price_change(all_price_changes)

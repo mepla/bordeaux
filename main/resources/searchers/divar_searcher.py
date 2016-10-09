@@ -48,7 +48,7 @@ class DivarSearcher(BaseSearcher):
             g.search_phrase = search_phrase
             g.search_url = search_url
             g.is_second_hand = True
-            g.link = os.path.join('https://divar.ir/v', item_doc.get('title'), item_doc.get('token'))
+            g.link = u'https://divar.ir/v/' + unicode(item_doc.get('title')) + '/' + item_doc.get('token')
 
             return g
         except Exception as exc:
@@ -56,4 +56,7 @@ class DivarSearcher(BaseSearcher):
 
 
 if __name__ == '__main__':
-    DivarSearcher('https://search.divar.ir/json/', ['fujifilm'], {}).start_search()
+    res = DivarSearcher('https://search.divar.ir/json/', ['fujifilm'], {}).start_search()
+    for r in res:
+        s = r.to_string(summarize=True)
+        print s

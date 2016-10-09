@@ -41,27 +41,29 @@ class Item():
         else:
             json_data = {
                 'name': self.name,
+                'shop': self.shop,
                 'price': self.price,
                 'link': self.link,
                 'addition_date': self.addition_date,
-                'price_history': self.price_history,
-                'search_phrase': self.search_phrase
+                'search_phrase': self.search_phrase,
+                'price_history': self.price_history
             }
 
         return json_data
 
     def to_string(self, pretty=False, summarize=False):
-        return self.__str__(pretty=pretty, summarize=summarize)
+        s = self.__str__(pretty=pretty, summarize=summarize)
+        return s
 
     def __str__(self, pretty=False, summarize=False):
         if pretty is True:
             return json.dumps(self.to_json(summarize=summarize),
-                              sort_keys=True,
+                              ensure_ascii=False,
                               indent=2,
                               separators=(',', ': '),
                               encoding='utf-8')
         else:
-            return str(self.to_json())
+            return json.dumps(self.to_json(summarize=summarize), ensure_ascii=False)
 
 
 if __name__ == '__main__':
