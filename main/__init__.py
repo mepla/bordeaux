@@ -22,7 +22,6 @@ config = {
                         'type': ''
                     }
                 }
-
             },
             'afrang': {
                 'enabled': False,
