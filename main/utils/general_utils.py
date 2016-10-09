@@ -6,4 +6,4 @@ def filter_general_document_db_record(doc):
 
 
 def base64(string):
-    return b64encode(string)
+    return b64encode(string.encode('utf-8'))

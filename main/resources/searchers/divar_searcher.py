@@ -1,4 +1,5 @@
-import datetime
+# -*- coding: UTF-8 -*-
+
 import os
 
 import requests
@@ -32,7 +33,8 @@ class DivarSearcher(BaseSearcher):
             for item_doc in res_array:
                 item = self.create_item(item_doc, qry, self.base_url)
                 results.append(item)
-                print item.to_string(True, True)
+
+        return results
 
     def create_item(self, item_doc, search_phrase=None, search_url=None):
         g = Item()
@@ -52,28 +54,6 @@ class DivarSearcher(BaseSearcher):
         except Exception as exc:
             print('Could not parse item_doc: {} -> {}\n\n'.format(exc, item_doc))
 
-'''
-{
-			"v01": 1,
-			"v09": 1750000,
-			"hc": false,
-			"c3": 32,
-			"c2": 30,
-			"ic": 1,
-			"c1": 1,
-			"c4": null,
-			"p2": 1,
-			"p3": null,
-			"c": "11",
-			"p1": null,
-			"d": 29331,
-			"p4": 78,
-			"title": "Fujifilm X-Pro1",
-			"p": 0,
-			"token": "xMJdajJuD",
-			"desc": "\u0628\u062f\u0646\u0647X-Pro1 \r\n\u062e\u06cc\u0644\u06cc \u062e\u06cc\u0644\u06cc \u06a9\u0645 \u06a9\u0627\u0631 \u06a9\u0631\u062f\u0647. \u062f\u0631 \u062d\u062f \u0622\u06a9\u0628\u0646\u062f. \u0628\u0627 \u06a9\u0627\u0631\u062a\u0646 \u0648 \u062a\u0645\u0627\u0645 \u0645\u062a\u0639\u0644\u0642\u0627\u062a..."
-		}
-'''
 
 if __name__ == '__main__':
     DivarSearcher('https://search.divar.ir/json/', ['fujifilm'], {}).start_search()

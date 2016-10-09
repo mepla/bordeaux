@@ -58,7 +58,8 @@ class Item():
             return json.dumps(self.to_json(summarize=summarize),
                               sort_keys=True,
                               indent=2,
-                              separators=(',', ': '))
+                              separators=(',', ': '),
+                              encoding='utf-8')
         else:
             return str(self.to_json())
 
