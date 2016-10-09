@@ -21,7 +21,10 @@ class DigikalaSearcher(BaseSearcher):
                 logging.warn('There is no defined category in Digikala for: {}, Skipping...'.format(cat))
                 continue
 
-            search_url = '{}/?category={}&status=2&type={}&pageSize=100'.format(self.base_url, categories.get(cat).get('category'), categories.get(cat).get('type'))
+            search_url = '{}/?category={}&status=2&pageSize=100'.format(self.base_url, categories.get(cat).get('category'))
+            if categories.get(cat).get('type'):
+                search_url += '&type={}'.format(categories.get(cat).get('type'))
+
             logging.debug('DK searching for {}: {}'.format(cat, search_url))
             result = requests.get(search_url)
             if 200 <= result.status_code < 300:
