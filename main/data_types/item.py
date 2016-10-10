@@ -1,3 +1,6 @@
+# -*- coding: UTF-8 -*-
+
+
 import json
 
 
@@ -33,38 +36,49 @@ class Item():
                     # setattr(self, attr_key, data[attr_key])
 
     def to_json(self, summarize=False):
-        if summarize is False:
-            json_data = {}
-            attr_dict = dict(self.__dict__)
-            for attr_key, attr_value in attr_dict.items():
-                json_data[attr_key] = attr_value
-        else:
-            json_data = {
-                'name': self.name,
-                'shop': self.shop,
-                'price': self.price,
-                'link': self.link,
-                'addition_date': self.addition_date,
-                'search_phrase': self.search_phrase,
-                'price_history': self.price_history
-            }
+        try:
+            if summarize is False:
+                json_data = {}
+                attr_dict = dict(self.__dict__)
+                for attr_key, attr_value in attr_dict.items():
+                    json_data[attr_key] = attr_value
+            else:
+                json_data = {
+                    'name': self.name,
+                    'shop': self.shop,
+                    'price': self.price,
+                    'link': self.link,
+                    'addition_date': self.addition_date,
+                    'search_phrase': self.search_phrase,
+                    'price_history': self.price_history
+                }
 
-        return json_data
+            return json_data
+        except Exception as exc:
+            pass
 
     def to_string(self, pretty=False, summarize=False):
         s = self.__str__(pretty=pretty, summarize=summarize)
         return s
 
     def __str__(self, pretty=False, summarize=False):
-        if pretty is True:
-            return json.dumps(self.to_json(summarize=summarize),
-                              ensure_ascii=False,
-                              indent=2,
-                              separators=(',', ': '),
-                              encoding='utf-8')
-        else:
-            return json.dumps(self.to_json(summarize=summarize), ensure_ascii=False)
+        json_data = self.to_json(summarize=summarize)
 
+        try:
+            for k, v in json_data.items():
+                if isinstance(v, str):
+                    json_data[k] = unicode(v, encoding='utf-8')
+
+            if pretty is True:
+                return json.dumps(json_data,
+                                  ensure_ascii=False,
+                                  indent=2,
+                                  separators=(',', ': '))
+            else:
+                return json.dumps(json_data, ensure_ascii=False)
+
+        except Exception as exc:
+            pass
 
 if __name__ == '__main__':
     i = Item()

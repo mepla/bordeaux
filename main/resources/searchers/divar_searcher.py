@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import re
 
 import requests
 
@@ -34,7 +35,7 @@ class DivarSearcher(BaseSearcher):
                 item = self.create_item(item_doc, qry, self.base_url)
                 results.append(item)
 
-        return results
+        return self._refine_items(results)
 
     def create_item(self, item_doc, search_phrase=None, search_url=None):
         g = Item()
@@ -54,9 +55,19 @@ class DivarSearcher(BaseSearcher):
         except Exception as exc:
             print('Could not parse item_doc: {} -> {}\n\n'.format(exc, item_doc))
 
+    def _refine_items(self, items):
+        refined_items = []
+        for item in items:
+            if re.match('.*nevada.*', item.name, flags=re.IGNORECASE) or re.match('.*nevada.*', item.description, flags=re.IGNORECASE):
+                continue
+            if re.match('.*(xf|xt|x-|x1).*', item.name, flags=re.IGNORECASE):
+                refined_items.append(item)
+
+        return refined_items
+
 
 if __name__ == '__main__':
-    res = DivarSearcher('https://search.divar.ir/json/', ['fujifilm'], {}).start_search()
+    res = DivarSearcher('https://search.divar.ir/json/', ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم'], {}).start_search()
     for r in res:
         s = r.to_string(summarize=True)
         print s

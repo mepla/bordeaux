@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 config = {
     'database': {
         'mongo': {
@@ -35,7 +37,7 @@ config = {
                 'class': 'DivarSearcher',
                 'module': 'main.resources.searchers.divar_searcher',
                 'base_url': 'https://search.divar.ir/json/',
-                'phrases': ['fujifilm']
+                'phrases': ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم']
             }
     },
     'notifiers': {
