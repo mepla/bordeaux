@@ -1,5 +1,10 @@
+# -*- coding: UTF-8 -*-
+
+
 import logging
 import smtplib
+from email.header import Header
+from email.mime.text import MIMEText
 
 
 class NotificationControllerBase(object):
@@ -47,13 +52,17 @@ class EmailNotifier(NotifierBase):
         self._server = email_configs.get('smtp_server')
         self._port = email_configs.get('smtp_port')
         self._to = email_configs.get('to_address')
+        self._send_mail(self._to, 'salam', u'سلاک')
 
     def _send_mail(self, to, subject, body):
         server = smtplib.SMTP(self._server, int(self._port))
         server.starttls()
         server.login(self._addr, self._passw)
-        body = 'Subject: {}\n\n{}'.format(subject, body)
-        send_resp = server.sendmail(self._addr, to, body)
+
+        m = MIMEText(body.encode('utf-8'), 'plain', 'utf-8')
+        m['Subject'] = Header(subject, 'utf-8')
+
+        send_resp = server.sendmail(self._addr, to, m.as_string())
         server.quit()
 
     def notify_new(self, items):
