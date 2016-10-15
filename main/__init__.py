@@ -37,7 +37,7 @@ config = {
                 'class': 'DivarSearcher',
                 'module': 'main.resources.searchers.divar_searcher',
                 'base_url': 'https://search.divar.ir/json/',
-                'phrases': ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم']
+                'phrases': ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم', 'yongnuo']
             }
     },
     'notifiers': {

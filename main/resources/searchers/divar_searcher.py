@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-
+import logging
 import re
 
 import requests
@@ -29,6 +29,7 @@ class DivarSearcher(BaseSearcher):
         for qry in search_queries:
             post_param = self._post_params(qry)
             res = requests.post(self.base_url, json=post_param)
+            logging.debug('Divar searching for {}: {}'.format(qry, self.base_url))
             res_array = res.json().get('result').get('post_list')
             for item_doc in res_array:
                 item = self.create_item(item_doc, qry, self.base_url)
@@ -59,14 +60,18 @@ class DivarSearcher(BaseSearcher):
         for item in items:
             if re.match('.*nevada.*', item.name, flags=re.IGNORECASE) or re.match('.*nevada.*', item.description, flags=re.IGNORECASE):
                 continue
-            if re.match('.*(xf|xt|x-|x1).*', item.name, flags=re.IGNORECASE):
+            if re.match('.*(xf|xt|x-|x1).*', item.name, flags=re.IGNORECASE) or re.match('.*(xf|xt|x-|x1).*', item.description, flags=re.IGNORECASE):
                 refined_items.append(item)
+                continue
+            if item.search_phrase not in ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم']:
+                refined_items.append(item)
+                continue
 
         return refined_items
 
 
 if __name__ == '__main__':
-    res = DivarSearcher('https://search.divar.ir/json/', ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم'], {}).start_search()
+    res = DivarSearcher('https://search.divar.ir/json/', ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم', 'yongnuo'], {}).start_search()
     for r in res:
         s = r.to_string(summarize=True)
         print s

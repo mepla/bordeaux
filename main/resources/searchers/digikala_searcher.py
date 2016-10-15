@@ -25,7 +25,7 @@ class DigikalaSearcher(BaseSearcher):
             if categories.get(cat).get('type'):
                 search_url += '&type={}'.format(categories.get(cat).get('type'))
 
-            logging.debug('DK searching for {}: {}'.format(cat, search_url))
+            logging.debug('Digikala searching for {}: {}'.format(cat, search_url))
             result = requests.get(search_url)
             if 200 <= result.status_code < 300:
                 item_docs = result.json().get('hits').get('hits')
