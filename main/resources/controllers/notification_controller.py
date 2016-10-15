@@ -52,7 +52,6 @@ class EmailNotifier(NotifierBase):
         self._server = email_configs.get('smtp_server')
         self._port = email_configs.get('smtp_port')
         self._to = email_configs.get('to_address')
-        self._send_mail(self._to, 'salam', u'سلاک')
 
     def _send_mail(self, to, subject, body):
         server = smtplib.SMTP(self._server, int(self._port))
