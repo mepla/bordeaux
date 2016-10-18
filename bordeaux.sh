@@ -12,11 +12,11 @@ do
     		VERBOSE=true
     		shift # past argument
    		;;
-	case $key in
     	-r|--report)
     		REPORT=true
     		shift # past argument
    		;;
+
     	*)
 		;;
 	esac
