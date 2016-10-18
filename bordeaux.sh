@@ -1,6 +1,7 @@
 #!/bin/bash
 
 VERBOSE=false
+REPORT=false
 
 while [[ $# -gt 0 ]]
 do
@@ -9,6 +10,11 @@ do
 	case $key in
     	-v|--verbose)
     		VERBOSE=true
+    		shift # past argument
+   		;;
+	case $key in
+    	-r|--report)
+    		REPORT=true
     		shift # past argument
    		;;
     	*)
@@ -24,5 +30,8 @@ then
 	python "$SCRIPT_PATH" >> /var/log/bordeaux.log 2>&1
 	tail -n 20 /var/log/bordeaux.log
 else
-	python "$SCRIPT_PATH" >> /var/log/bordeaux.log 2>&1
+    if [ $VERBOSE = true ];
+    then
+	    python "$SCRIPT_PATH" -r >> /var/log/bordeaux.log 2>&1
+	fi
 fi
