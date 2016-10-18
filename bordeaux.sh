@@ -30,8 +30,10 @@ then
 	python "$SCRIPT_PATH" >> /var/log/bordeaux.log 2>&1
 	tail -n 20 /var/log/bordeaux.log
 else
-    if [ $VERBOSE = true ];
+    if [ $REPORT = true ];
     then
-	    python "$SCRIPT_PATH" -r >> /var/log/bordeaux.log 2>&1
+	    python "$SCRIPT_PATH" -r 
+	else
+	    python "$SCRIPT_PATH" >> /var/log/bordeaux.log 2>&1
 	fi
 fi
