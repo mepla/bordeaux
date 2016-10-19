@@ -13,7 +13,7 @@ config = {
                 'class': 'DigikalaSearcher',
                 'module': 'main.resources.searchers.digikala_searcher',
                 'base_url': 'http://search.digikala.com/api/search',
-                'phrases': ['ps4_games', 'camera_flash'],
+                'phrases': ['ps4_games', 'camera_flash', 'mirrorless_camera'],
                 'phrase_details': {
                     'ps4_games': {
                         'category': 'c5609',
@@ -22,6 +22,10 @@ config = {
                     'camera_flash': {
                         'category': 'c108',
                         'type': ''
+                    },
+                    'mirrorless_camera': {
+                        'category': 'c48',
+                        'type': '8'
                     }
                 }
             },
