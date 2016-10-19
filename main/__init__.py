@@ -34,7 +34,7 @@ config = {
                 'class': 'SheypoorSearcher',
                 'module': 'main.resources.searchers.sheypoor_searcher',
                 'base_url': 'http://www.sheypoor.com/search',
-                'phrases': ['fujinon', 'fujifilm', 'xf 5', 'xf 1', 'xf 6', 'xf 9']
+                'phrases': ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم', 'yongnuo']
             },
             'divar': {
                 'enabled': True,
