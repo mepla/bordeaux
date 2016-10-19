@@ -29,11 +29,11 @@ config = {
                     }
                 }
             },
-            'afrang': {
-                'enabled': False,
-                'class': 'AfrangSecondHandSearcher',
-                'module': 'main.resources.searchers.afrang_second_hand',
-                'base_url': 'http://www.afrangdigital.com/AjaxSearchUsed.aspx',
+            'sheypoor': {
+                'enabled': True,
+                'class': 'SheypoorSearcher',
+                'module': 'main.resources.searchers.sheypoor_searcher',
+                'base_url': 'http://www.sheypoor.com/search',
                 'phrases': ['fujinon', 'fujifilm', 'xf 5', 'xf 1', 'xf 6', 'xf 9']
             },
             'divar': {
@@ -42,6 +42,13 @@ config = {
                 'module': 'main.resources.searchers.divar_searcher',
                 'base_url': 'https://search.divar.ir/json/',
                 'phrases': ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم', 'yongnuo']
+            },
+            'afrang': {
+                'enabled': False,
+                'class': 'AfrangSecondHandSearcher',
+                'module': 'main.resources.searchers.afrang_second_hand',
+                'base_url': 'http://www.afrangdigital.com/AjaxSearchUsed.aspx',
+                'phrases': ['fujinon', 'fujifilm', 'xf 5', 'xf 1', 'xf 6', 'xf 9']
             }
     },
     'notifiers': {
