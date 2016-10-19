@@ -66,8 +66,11 @@ class EmailNotifier(NotifierBase):
 
     def notify_new(self, items):
         body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
-        self._send_mail(self._to, '{} New Items'.format(len(items)), body)
+        count = len(items)
+        self._send_mail(self._to, '{} New Item{}'.format(count, 's' if count > 1 else ''), body)
 
     def notify_change_price(self, items):
         body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
-        self._send_mail(self._to, '{} Price Change'.format(len(items)), body)
+        count = len(items)
+        self._send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
+
