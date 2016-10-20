@@ -1,4 +1,4 @@
-import os
+# -*- coding: UTF-8 -*-
 
 import requests
 import bs4
@@ -26,8 +26,13 @@ class AfrangSecondHandSearcher(BaseSearcher):
 
         return results
 
-    def create_item(self, div):
+    def create_item(self, div, search_phrase=None, search_url=None):
         g = Item()
+        g.shop = 'afrang'
+        g.search_phrase = search_phrase
+        g.search_url = search_url
+        g.is_second_hand = True
+
         try:
             a_tag = div.find('div', {'class': 'name-pro2'}).h2.a
             assert isinstance(a_tag, Tag)
@@ -49,3 +54,9 @@ class AfrangSecondHandSearcher(BaseSearcher):
         except Exception as exc:
             # print('Could not parse div: {} -> {}\n\n'.format(div, exc))
             pass
+
+if __name__ == '__main__':
+    res = AfrangSecondHandSearcher('', ['test'], {}).start_search()
+    for r in res:
+        s = r.to_string(summarize=True)
+        print s

@@ -43,6 +43,13 @@ config = {
                 'base_url': 'https://search.divar.ir/json/',
                 'phrases': ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم', 'yongnuo']
             },
+            'afrang_timeline': {
+                'enabled': True,
+                'class': 'AfrangSecondHandTimelineSearcher',
+                'module': 'main.resources.searchers.afrang_second_hand_timeline',
+                'base_url': 'http://www.afrangdigital.com/Useds/-1',
+                'phrases': ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم', 'yongnuo']
+            },
             'afrang': {
                 'enabled': False,
                 'class': 'AfrangSecondHandSearcher',
