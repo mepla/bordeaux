@@ -34,7 +34,7 @@ class SheypoorSearcher(BaseSearcher):
         assert isinstance(sec, Tag)
         g = Item()
 
-        g.shop = 'digikala'
+        g.shop = 'sheypoor'
         g.search_phrase = search_phrase
         g.search_url = search_url
         g.is_second_hand = True
