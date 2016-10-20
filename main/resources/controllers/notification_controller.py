@@ -6,6 +6,8 @@ import smtplib
 from email.header import Header
 from email.mime.text import MIMEText
 
+from json2html import json2html
+
 
 class NotificationControllerBase(object):
     pass
@@ -53,7 +55,7 @@ class EmailNotifier(NotifierBase):
         self._port = email_configs.get('smtp_port')
         self._to = email_configs.get('to_address')
 
-    def send_mail(self, to, subject, body):
+    def send_mail(self, to, subject, body=''):
         if not to:
             to = self._to
 
@@ -61,19 +63,23 @@ class EmailNotifier(NotifierBase):
         server.starttls()
         server.login(self._addr, self._passw)
 
-        m = MIMEText(body.encode('utf-8'), 'plain', 'utf-8')
+        if body.startswith('<html') or body.startswith('<table'):
+            body_type = 'html'
+        else:
+            body_type = 'plain'
+        m = MIMEText(body.encode('utf-8'), body_type, 'utf-8')
         m['Subject'] = Header(subject, 'utf-8')
 
         send_resp = server.sendmail(self._addr, to, m.as_string())
         server.quit()
 
     def notify_new(self, items):
-        body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
+        body = '<br> </br>'.join(map(lambda x: json2html.convert(json=x.to_json(summarize=True)), items))
         count = len(items)
         self.send_mail(self._to, '{} New Item{}'.format(count, 's' if count > 1 else ''), body)
 
     def notify_change_price(self, items):
-        body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
+        body = '<br> </br>'.join(map(lambda x: json2html.convert(json=x.to_json(summarize=True)), items))
         count = len(items)
         self.send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
 
