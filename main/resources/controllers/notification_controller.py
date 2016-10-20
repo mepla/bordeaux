@@ -53,7 +53,10 @@ class EmailNotifier(NotifierBase):
         self._port = email_configs.get('smtp_port')
         self._to = email_configs.get('to_address')
 
-    def _send_mail(self, to, subject, body):
+    def send_mail(self, to, subject, body):
+        if not to:
+            to = self._to
+
         server = smtplib.SMTP(self._server, int(self._port))
         server.starttls()
         server.login(self._addr, self._passw)
@@ -67,10 +70,10 @@ class EmailNotifier(NotifierBase):
     def notify_new(self, items):
         body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
         count = len(items)
-        self._send_mail(self._to, '{} New Item{}'.format(count, 's' if count > 1 else ''), body)
+        self.send_mail(self._to, '{} New Item{}'.format(count, 's' if count > 1 else ''), body)
 
     def notify_change_price(self, items):
         body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
         count = len(items)
-        self._send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
+        self.send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
 
