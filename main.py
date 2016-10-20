@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     except Exception as exc:
         notifier = EmailNotifier(config.get('notifiers').get('email'))
-        exception_formatted = traceback.print_exc(file=sys.stderr)
+        exception_formatted = traceback.format_exc()
         logging.critical(exception_formatted)
         notifier.send_mail(None, 'Exception in bordeaux ({} -> {})'.format(type(exc), exc), exception_formatted)
 
