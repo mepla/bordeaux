@@ -18,8 +18,13 @@ class SheypoorSearcher(BaseSearcher):
         search_queries = list(self.search_phrases)
         for qry in search_queries:
             search_url = self.base_url + '?q={}&c=&r=8'.format(qry)
-            sheypoor_res = requests.get(search_url)
             logging.debug('Sheyppor searching for {}: {}'.format(qry, self.base_url))
+            sheypoor_res = requests.get(search_url)
+
+            if not (200 <= sheypoor_res.status_code < 300):
+                logging.error('Sheypoor search failed for `{}`: ({} -> {})'.format(qry, sheypoor_res.status_code, sheypoor_res.content))
+                continue
+
             soup = bs4.BeautifulSoup(sheypoor_res.content, 'html.parser')
             sec = soup.find('section', id='serp')
 
