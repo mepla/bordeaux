@@ -28,7 +28,12 @@ class SheypoorSearcher(BaseSearcher):
             soup = bs4.BeautifulSoup(sheypoor_res.content, 'html.parser')
             sec = soup.find('section', id='serp')
 
-            for item_tag in sec.find_all('article', {'class': 'item-medium'}):
+            if not sec:
+                logging.debug("No item found for sheypoor search: `{}`".format(qry))
+                continue
+
+            all_item_medium = sec.find_all('article', {'class': 'item-medium'})
+            for item_tag in all_item_medium:
                 item = self.create_item(item_tag, qry, search_url)
                 if item:
                     results.append(item)
