@@ -22,6 +22,9 @@ class DigikalaSearcher(BaseSearcher):
                 continue
 
             search_url = '{}/?category={}&status=2&pageSize=100'.format(self.base_url, categories.get(cat).get('category'))
+            attribs = categories.get(cat).get('attributes')
+            if attribs:
+                search_url += '&attribute={}'.format(' '.join(attribs))
             if categories.get(cat).get('type'):
                 search_url += '&type={}'.format(categories.get(cat).get('type'))
 

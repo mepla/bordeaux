@@ -13,7 +13,7 @@ config = {
                 'class': 'DigikalaSearcher',
                 'module': 'main.resources.searchers.digikala_searcher',
                 'base_url': 'http://search.digikala.com/api/search',
-                'phrases': ['ps4_games', 'camera_flash', 'mirrorless_camera'],
+                'phrases': ['ps4_games', 'camera_flash', 'mirrorless_camera', 'large_external_hdd'],
                 'phrase_details': {
                     'ps4_games': {
                         'category': 'c5609',
@@ -26,6 +26,11 @@ config = {
                     'mirrorless_camera': {
                         'category': 'c48',
                         'type': '8'
+                    },
+                    'large_external_hdd': {
+                        'category': 'c68',
+                        'type': '',
+                        'attributes': ['A606V1074', 'A606V1075', 'A606V1518', 'A606V1519', 'A606V18497', 'A606V30937']
                     }
                 }
             },
