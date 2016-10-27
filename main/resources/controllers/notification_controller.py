@@ -69,6 +69,7 @@ class EmailNotifier(NotifierBase):
             body_type = 'plain'
         m = MIMEText(body.encode('utf-8'), body_type, 'utf-8')
         m['Subject'] = Header(subject, 'utf-8')
+        m['From'] = Header('Bordeaux Notification', 'utf-8')
 
         send_resp = server.sendmail(self._addr, to, m.as_string())
         server.quit()
