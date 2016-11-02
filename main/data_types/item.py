@@ -4,7 +4,7 @@
 import json
 
 
-class Item():
+class Item(object):
 
     def __init__(self, data=None):
         self.price = None
@@ -27,6 +27,7 @@ class Item():
         self.shop = None
         self.last_update = None
         self.addition_date = None
+        self.type = 'item'
 
         if data:
             attr_dict = dict(self.__dict__)
@@ -79,6 +80,43 @@ class Item():
 
         except Exception as exc:
             pass
+
+
+class SpecialItem(Item):
+    def __init__(self, data=None):
+        self.type = 'special_item'
+        self.discount = None
+        self.discount_percent = None
+        self.old_price = None
+        self.start_date = None
+        self.end_date = None
+
+        if data:
+            attr_dict = dict(self.__dict__)
+            for attr_key in attr_dict:
+                if attr_key in data:
+                    self.__dict__[attr_key] = data[attr_key]
+
+    def to_json(self, summarize=False):
+        json_data = super(SpecialItem, self).to_json(summarize)
+        try:
+            if summarize is False:
+                json_data = {}
+                attr_dict = dict(self.__dict__)
+                for attr_key, attr_value in attr_dict.items():
+                    json_data[attr_key] = attr_value
+            else:
+                json_data['discount'] = self.discount
+                json_data['discount_percent'] = self.discount_percent
+                json_data['old_price'] = self.old_price
+                json_data['start_date'] = self.start_date
+                json_data['end_date'] = self.end_date
+
+            return json_data
+
+        except Exception as exc:
+            pass
+
 
 if __name__ == '__main__':
     i = Item()

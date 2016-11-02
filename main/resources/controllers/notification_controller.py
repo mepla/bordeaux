@@ -23,6 +23,8 @@ class NotificationController(NotificationControllerBase):
     def notify_price_change(self, price_change_items):
         map(lambda x: x.notify_change_price(price_change_items), self._notifiers)
 
+    def notify_special_items(self, special_items):
+        map(lambda x: x.notify_special_items(special_items), self._notifiers)
 
 class NotifierBase(object):
     def notify_new(self, items):
@@ -43,6 +45,11 @@ class LogNotifier(NotifierBase):
 
     def notify_change_price(self, items):
         logging.info('{} items has changed in price:'.format(len(items)))
+        body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
+        logging.info(body)
+
+    def notify_special_items(self, items):
+        logging.info('There are {} special items:'.format(len(items)))
         body = '\n'.join(map(lambda x: x.to_string(pretty=True, summarize=True), items))
         logging.info(body)
 
@@ -84,3 +91,7 @@ class EmailNotifier(NotifierBase):
         count = len(items)
         self.send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
 
+    def notify_special_items(self, items):
+        body = '<br> </br>'.join(map(lambda x: json2html.convert(json=x.to_json(summarize=True)), items))
+        count = len(items)
+        self.send_mail(self._to, '{} Special Item{}'.format(count, 's' if count > 1 else ''), body)

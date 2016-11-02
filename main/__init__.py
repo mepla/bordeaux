@@ -34,8 +34,14 @@ config = {
                     }
                 }
             },
-            'sheypoor': {
+            'digikala_special_items': {
                 'enabled': True,
+                'class': 'DigikalaSpecialOfferSearch',
+                'module': 'main.resources.searchers.digikala_special_offers',
+                'base_url': 'http://search.digikala.com/api2/Data/Get?categoryId=0&ip=0',
+            },
+            'sheypoor': {
+                'enabled': False,
                 'class': 'SheypoorSearcher',
                 'module': 'main.resources.searchers.sheypoor_searcher',
                 'base_url': 'http://www.sheypoor.com/search',

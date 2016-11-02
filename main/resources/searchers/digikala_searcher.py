@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import datetime
 import os
 
@@ -56,7 +58,7 @@ class DigikalaSearcher(BaseSearcher):
             g.name = item_doc.get('EnTitle')
             g.image_link = os.path.join('http://file.digikala.com/Digikala', item_doc.get('ImagePath'))
             g.is_second_hand = False
-            g.link = os.path.join('http://www.digikala.com/Product/DKP-{}'.format(item_doc.get('Id')), item_doc.get('UrlCode'))
+            g.link = 'http://www.digikala.com/Product/DKP-{}'.format(item_doc.get('Id'))
 
             return g
         except Exception as exc:
