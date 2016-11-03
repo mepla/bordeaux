@@ -18,7 +18,7 @@ class SheypoorSearcher(BaseSearcher):
         search_queries = list(self.search_phrases)
         for qry in search_queries:
             search_url = self.base_url + '?q={}&c=&r=8'.format(qry)
-            logging.debug('Sheyppor searching for {}: {}'.format(qry, self.base_url))
+            logging.debug('Sheypoor searching for {}: {}'.format(qry, self.base_url))
             sheypoor_res = requests.get(search_url)
 
             if not (200 <= sheypoor_res.status_code < 300):

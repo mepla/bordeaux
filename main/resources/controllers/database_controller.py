@@ -12,6 +12,9 @@ class DatabaseController(object):
         self.special_items = []
 
     def analayze_and_save(self, array_of_items):
+        self.new_items = []
+        self.price_change_items = []
+        self.special_items = []
         for item in array_of_items:
             item.id = base64(item.link)
             item.last_update = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
