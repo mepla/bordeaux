@@ -97,6 +97,7 @@ class EmailNotifier(NotifierBase):
         for item in items:
             data = item.to_json(summarize=True)
             data['image'] = '<img src="{}" alt="Mountain View" style="width:304px;height:228px;">'.format(item.image_link)
+            del(data['price_history'])
             html_doc = json2html.convert(json=data).replace('<li>', '').replace('</li>', '')
             body += '{}<br> </br>'.format(html_doc)
 
