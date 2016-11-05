@@ -46,6 +46,7 @@ class DivarSearcher(BaseSearcher):
             g.title = item_doc.get('title')
             g.description = item_doc.get('desc')
             g.price = item_doc.get('v09')
+            g.price *= 10
             g.search_phrase = search_phrase
             g.search_url = search_url
             g.is_second_hand = True

@@ -3,8 +3,8 @@
 config = {
     'database': {
         'mongo': {
-            'server': '192.168.1.100',
-            'port': 27017
+            'server': '185.99.214.188',
+            'port': 28017
         }
     },
     'searchers': {
