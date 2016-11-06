@@ -82,13 +82,27 @@ class EmailNotifier(NotifierBase):
         server.quit()
 
     def notify_new(self, items):
-        body = '<br> </br>'.join(map(lambda x: json2html.convert(json=x.to_json(summarize=True)).replace('<li>', '').replace('</li>', '').replace('<ul>', '').replace('</ul>', ''), items))
         count = len(items)
+        body = ''
+        for item in items:
+            data = item.to_json(summarize=True)
+            if item.image_link:
+                data['image'] = '<img src="{}" width=auto height=120 >'.format(item.image_link)
+            html_doc = json2html.convert(json=data).replace('<li>', '').replace('</li>', '').replace('<ul>', '').replace('</ul>', '')
+            body += u'{}<br> </br>'.format(html_doc)
+
         self.send_mail(self._to, '{} New Item{}'.format(count, 's' if count > 1 else ''), body)
 
     def notify_change_price(self, items):
-        body = '<br> </br>'.join(map(lambda x: json2html.convert(json=x.to_json(summarize=True)).replace('<li>', '').replace('</li>', '').replace('<ul>', '').replace('</ul>', ''), items))
         count = len(items)
+        body = ''
+        for item in items:
+            data = item.to_json(summarize=True)
+            if item.image_link:
+                data['image'] = '<img src="{}" width=auto height=120 >'.format(item.image_link)
+            html_doc = json2html.convert(json=data).replace('<li>', '').replace('</li>', '').replace('<ul>', '').replace('</ul>', '')
+            body += u'{}<br> </br>'.format(html_doc)
+
         self.send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
 
     def notify_special_items(self, items):
@@ -96,8 +110,9 @@ class EmailNotifier(NotifierBase):
         body = ''
         for item in items:
             data = item.to_json(summarize=True)
-            data['image'] = '<img src="{}" width=auto height=120 >'.format(item.image_link)
+            if item.image_link:
+                data['image'] = '<img src="{}" width=auto height=120 >'.format(item.image_link)
             html_doc = json2html.convert(json=data).replace('<li>', '').replace('</li>', '').replace('<ul>', '').replace('</ul>', '')
-            body += '{}<br> </br>'.format(html_doc)
+            body += u'{}<br> </br>'.format(html_doc)
 
         self.send_mail(self._to, '{} Special Item{}'.format(count, 's' if count > 1 else ''), body)
