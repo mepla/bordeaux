@@ -46,7 +46,8 @@ class DivarSearcher(BaseSearcher):
             g.title = item_doc.get('title')
             g.description = item_doc.get('desc')
             g.price = item_doc.get('v09')
-            g.price *= 10
+            if g.price and g.price > 0:
+                g.price *= 10
             g.search_phrase = search_phrase
             g.search_url = search_url
             g.is_second_hand = True
@@ -59,6 +60,8 @@ class DivarSearcher(BaseSearcher):
     def _refine_items(self, items):
         refined_items = []
         for item in items:
+            if not item:
+                continue
             desired_regex = '.*(xf|xt|xe|xa|x-|x1).*'
             if re.match('.*nevada.*', item.name, flags=re.IGNORECASE) or re.match('.*nevada.*', item.description, flags=re.IGNORECASE):
                 continue
