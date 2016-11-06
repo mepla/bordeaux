@@ -67,9 +67,9 @@ class AfrangSecondHandTimelineSearcher(BaseSearcher):
         for item in items:
             desired_words = self.search_phrases
             desired_regex = '.*({}).*'.format('|'.join(desired_words))
-            if re.match(desired_regex, item.name, flags=re.IGNORECASE) or re.match(desired_regex, item.description, flags=re.IGNORECASE):
+            if re.search(desired_regex, item.name, flags=re.IGNORECASE) or re.search(desired_regex, item.description, flags=re.IGNORECASE):
                 desired_regex = '.*(xf|xt|xe|xa|x-|x1|560|۵۶۰|{}).*'.format('|'.join(desired_words))
-                if re.match(desired_regex, item.name, flags=re.IGNORECASE) or re.match(desired_regex, item.description,
+                if re.search(desired_regex, item.name, flags=re.IGNORECASE) or re.search(desired_regex, item.description,
                                                                                        flags=re.IGNORECASE):
                     refined_items.append(item)
                     continue

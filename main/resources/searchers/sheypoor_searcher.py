@@ -74,9 +74,9 @@ class SheypoorSearcher(BaseSearcher):
         refined_items = []
         for item in items:
             desired_regex = '.*(xf|xt|xe|xa|x-|x1).*'
-            if re.match('.*nevada.*', item.name, flags=re.IGNORECASE) or re.match('.*nevada.*', item.description, flags=re.IGNORECASE):
+            if re.search(ur'.*دوچرخه.*', item.name, flags=re.IGNORECASE) or re.search(ur'.*دوچرخه.*', item.description, flags=re.IGNORECASE):
                 continue
-            if re.match(desired_regex, item.name, flags=re.IGNORECASE) or re.match(desired_regex, item.description, flags=re.IGNORECASE):
+            if re.search(desired_regex, item.name, flags=re.IGNORECASE) or re.search(desired_regex, item.description, flags=re.IGNORECASE):
                 refined_items.append(item)
                 continue
             if item.search_phrase not in ['fujifilm', 'fuji', 'fujinon', 'فوجی', 'فوجی فیلم']:
