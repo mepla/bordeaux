@@ -46,8 +46,11 @@ class DigikalaSpecialOfferSearch(BaseSearcher):
             g.price = item_doc.get('Price') - item_doc.get('Discount', 0)
             g.discount = item_doc.get('Discount')
             g.old_price = item_doc.get('Price')
-            g.discount_percent = int(float(float(g.discount) / float(g.old_price)) * 100)
-            g.view_price = item_doc.get('MaxPrice')
+            if g.price > 0:
+                g.discount_percent = int(float(float(g.discount) / float(g.old_price)) * 100)
+                g.view_price = item_doc.get('MaxPrice')
+            else:
+                g.discount_percent = 0
 
             try:
                 g.start_date = datetime.datetime.strptime(item_doc.get('StartDateTime'), '%Y-%m-%dT%H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
