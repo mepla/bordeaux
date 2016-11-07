@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import logging
 
 import requests
 import bs4
@@ -16,7 +17,17 @@ class AfrangSecondHandSearcher(BaseSearcher):
 
         for qry in search_queries:
             search_url = '{}?Query={}'.format(self.base_url, qry)
-            result = requests.get(search_url)
+
+            try:
+                result = requests.get(search_url, timeout=10)
+            except Exception as exc:
+                logging.error('Afrang search failed to connect `{}`: ({} -> {})'.format(qry, result.status_code, result.content))
+                continue
+
+            if not (200 <= result.status_code < 300):
+                logging.error('Afrang search failed for `{}`: ({} -> {})'.format(qry, result.status_code, result.content))
+                continue
+
             soup = bs4.BeautifulSoup(result.content, 'html.parser')
             all_divs = soup.find_all('div')
             for div in all_divs:

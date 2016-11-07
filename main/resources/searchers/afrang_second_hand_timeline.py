@@ -17,7 +17,17 @@ class AfrangSecondHandTimelineSearcher(BaseSearcher):
         for i in range(1, 3):
             search_url = self.base_url.rstrip('/') + '?page={}'.format(i)
             logging.debug('Afrang timeline searching for page {}: {}'.format(i, search_url))
-            result = requests.get(search_url)
+            try:
+                result = requests.get(search_url, timeout=10)
+            except Exception as exc:
+                logging.error(
+                    'Afrang timeline search failed to connect `{}`: ({} -> {})'.format(search_url, result.status_code, result.content))
+                continue
+
+            if not (200 <= result.status_code < 300):
+                logging.error('Afrang timeline search failed for `{}`: ({} -> {})'.format(search_url, result.status_code, result.content))
+                continue
+
             soup = bs4.BeautifulSoup(result.content, 'html.parser')
             all_divs = soup.find_all('div', {'class': 'row-box-item box-s-3'})
             for div in all_divs:

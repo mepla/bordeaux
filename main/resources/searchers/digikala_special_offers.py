@@ -18,13 +18,21 @@ class DigikalaSpecialOfferSearch(BaseSearcher):
         search_url = self.base_url
 
         logging.debug('Digikala special searching for special items: {}'.format(search_url))
-        result = requests.get(search_url)
-        if 200 <= result.status_code < 300:
-            item_docs = result.json().get('responses')[0].get('hits').get('hits')
-            for item_doc in item_docs:
-                results.append(self.create_item(item_doc.get('_source'), 'digikala_special_items', search_url))
-        else:
-            logging.debug('DK searching for {}: ({})\n{}'.format('digikala_special_items', result.status_code, result.raw))
+        try:
+            result = requests.get(search_url, timeout=10)
+        except Exception as exc:
+            logging.error('Digikala special search failed to connect `{}`)'.format(search_url))
+            return []
+
+        if not (200 <= result.status_code < 300):
+            logging.error('Digikala special search failed for `{}`: ({} -> {})'.format(search_url, result.status_code, result.content))
+            return []
+
+        item_docs = result.json().get('responses')[0].get('hits').get('hits')
+        for item_doc in item_docs:
+            item = self.create_item(item_doc.get('_source'), 'digikala_special_items', search_url)
+            if item:
+                results.append(item)
 
         return results
 

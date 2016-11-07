@@ -19,7 +19,11 @@ class SheypoorSearcher(BaseSearcher):
         for qry in search_queries:
             search_url = self.base_url + '?q={}&c=&r=8'.format(qry)
             logging.debug('Sheypoor searching for {}: {}'.format(qry, self.base_url))
-            sheypoor_res = requests.get(search_url)
+            try:
+                sheypoor_res = requests.get(search_url, timeout=10)
+            except Exception as exc:
+                logging.error('Sheypoor search failed to connect `{}`)'.format(qry))
+                continue
 
             if not (200 <= sheypoor_res.status_code < 300):
                 logging.error('Sheypoor search failed for `{}`: ({} -> {})'.format(qry, sheypoor_res.status_code, sheypoor_res.content))

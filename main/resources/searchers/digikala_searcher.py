@@ -31,13 +31,21 @@ class DigikalaSearcher(BaseSearcher):
                 search_url += '&type={}'.format(categories.get(cat).get('type'))
 
             logging.debug('Digikala searching for {}: {}'.format(cat, search_url))
-            result = requests.get(search_url)
-            if 200 <= result.status_code < 300:
-                item_docs = result.json().get('hits').get('hits')
-                for item_doc in item_docs:
-                    results.append(self.create_item(item_doc.get('_source'), cat, search_url))
-            else:
-                logging.debug('DK searching for {}: ({})\n{}'.format(cat, result.status_code, result.raw))
+            try:
+                result = requests.get(search_url, timeout=10)
+            except Exception as exc:
+                logging.error('Digikala search failed to connect `{}`)'.format(cat))
+                continue
+
+            if not (200 <= result.status_code < 300):
+                logging.error('Digikala search failed for `{}`: ({} -> {})'.format(cat, result.status_code, result.content))
+                continue
+
+            item_docs = result.json().get('hits').get('hits')
+            for item_doc in item_docs:
+                item = self.create_item(item_doc.get('_source'), cat, search_url)
+                if item:
+                    results.append(item)
 
         return results
 
@@ -61,5 +69,6 @@ class DigikalaSearcher(BaseSearcher):
             g.link = 'http://www.digikala.com/Product/DKP-{}'.format(item_doc.get('Id'))
 
             return g
+
         except Exception as exc:
             print('Could not parse item_doc: {} -> {}\n\n'.format(exc, item_doc))

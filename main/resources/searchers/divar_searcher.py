@@ -28,12 +28,23 @@ class DivarSearcher(BaseSearcher):
         search_queries = list(self.search_phrases)
         for qry in search_queries:
             post_param = self._post_params(qry)
-            res = requests.post(self.base_url, json=post_param)
             logging.debug('Divar searching for {}: {}'.format(qry, self.base_url))
-            res_array = res.json().get('result').get('post_list')
+
+            try:
+                result = requests.post(self.base_url, json=post_param, timeout=10)
+            except Exception as exc:
+                logging.error('Divar search failed to connect `{}`)'.format(qry))
+                continue
+
+            if not (200 <= result.status_code < 300):
+                logging.error('Divar search failed for `{}`: ({} -> {})'.format(self.base_url, result.status_code, result.content))
+                continue
+
+            res_array = result.json().get('result').get('post_list')
             for item_doc in res_array:
                 item = self.create_item(item_doc, qry, self.base_url)
-                results.append(item)
+                if item:
+                    results.append(item)
 
         return self._refine_items(results)
 
