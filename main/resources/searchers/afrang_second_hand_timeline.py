@@ -21,7 +21,7 @@ class AfrangSecondHandTimelineSearcher(BaseSearcher):
                 result = requests.get(search_url, timeout=10)
             except Exception as exc:
                 logging.error(
-                    'Afrang timeline search failed to connect `{}`: ({} -> {})'.format(search_url, result.status_code, result.content))
+                    'Afrang timeline search failed to connect `{}`)'.format(search_url))
                 continue
 
             if not (200 <= result.status_code < 300):

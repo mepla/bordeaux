@@ -21,7 +21,7 @@ class AfrangSecondHandSearcher(BaseSearcher):
             try:
                 result = requests.get(search_url, timeout=10)
             except Exception as exc:
-                logging.error('Afrang search failed to connect `{}`: ({} -> {})'.format(qry, result.status_code, result.content))
+                logging.error('Afrang search failed to connect `{}`'.format(qry))
                 continue
 
             if not (200 <= result.status_code < 300):
