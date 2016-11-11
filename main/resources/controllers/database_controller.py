@@ -36,11 +36,11 @@ class DatabaseController(object):
             if last_price != item.price:
                 price_diff = last_price - item.price
                 if price_diff < 0:
-                    change_percent = int(float(float(price_diff) / float(last_price)) * 100)
+                    change_percent = int(float(float(-price_diff) / float(last_price)) * 100)
                 else:
-                    change_percent = -int(float(float(-price_diff) / float(last_price)) * 100)
+                    change_percent = -int(float(float(price_diff) / float(last_price)) * 100)
 
-                item.price_history.append({'price': item.price, 'date': item.last_update, 'change_percent': change_percent})
+                item.price_history.append({'price': item.price, 'date': item.last_update, 'percent': change_percent})
                 self.price_change_items.append(item)
 
             self.db.delete('item', {'id': item.id})
