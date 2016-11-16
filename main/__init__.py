@@ -15,7 +15,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "http://search.digikala.com/api/search",
-                "phrases": ["ps4_games", "camera_flash", "mirrorless_camera", "large_external_hdd", "camera_light"],
+                "phrases": ["ps4_games", "camera_flash", "mirrorless_camera", "large_external_hdd", "camera_light", "gopro"],
                 "phrase_details": {
                     "ps4_games": {
                         "category": "c5609",
@@ -24,6 +24,11 @@ default_configs = {
                     "camera_light": {
                         "category": "c111",
                         "type": ""
+                    },
+                    "gopro": {
+                        "category": "c49",
+                        "type": "",
+                        "brand": "76"
                     },
                     "camera_flash": {
                         "category": "c108",

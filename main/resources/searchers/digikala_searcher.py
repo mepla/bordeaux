@@ -24,11 +24,18 @@ class DigikalaSearcher(BaseSearcher):
                 continue
 
             search_url = '{}/?category={}&status=2&pageSize=100'.format(self.base_url, categories.get(cat).get('category'))
+
             attribs = categories.get(cat).get('attributes')
             if attribs:
                 search_url += '&attribute={}'.format(' '.join(attribs))
-            if categories.get(cat).get('type'):
-                search_url += '&type={}'.format(categories.get(cat).get('type'))
+
+            brand = categories.get(cat).get('brand')
+            if brand:
+                search_url += '&brand={}'.format(brand)
+
+            q_type = categories.get(cat).get('type')
+            if q_type:
+                search_url += '&type={}'.format(q_type)
 
             logging.debug('Digikala searching for {}: {}'.format(cat, search_url))
             try:
