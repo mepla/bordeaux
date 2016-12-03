@@ -59,7 +59,7 @@ class AfrangSecondHandTimelineSearcher(BaseSearcher):
             price_str = str(price_tag)
             g.view_price = price_str
             price_str = price_str.split(' ')[0].replace('<price>', '').replace(',', '')
-            g.price = price_str
+            g.price = int(price_str)
 
             try:
                 desc_tag = div.find('div', {'class': 'desc-pro'}).p.next.strip()
