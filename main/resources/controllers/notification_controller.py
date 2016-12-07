@@ -111,7 +111,7 @@ class EmailNotifier(NotifierBase):
         for item in items:
             data = item.to_json(summarize=True)
             if item.image_link:
-                data['image'] = '<img src="{}" width=auto height=120 >'.format(item.image_link)
+                data['image'] = '<a href="{}"> <img src="{}" width=auto height=120 > </a>'.format(item.link, item.image_link)
             html_doc = json2html.convert(json=data).replace('<li>', '').replace('</li>', '').replace('<ul>', '').replace('</ul>', '')
             body += u'{}<br> </br>'.format(html_doc)
 
