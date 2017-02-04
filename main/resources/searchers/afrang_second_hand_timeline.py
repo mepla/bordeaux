@@ -69,7 +69,7 @@ class AfrangSecondHandTimelineSearcher(BaseSearcher):
 
             return g
         except Exception as exc:
-            print('Could not parse div: {} -> {}\n\n'.format(div, exc))
+            # print('Could not parse div: {} -> {}\n\n'.format(div, exc))
             pass
 
     def _refine_items(self, items):
