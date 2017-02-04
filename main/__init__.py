@@ -15,7 +15,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "http://search.digikala.com/api/search",
-                "phrases": ["camera_flash", "mirrorless_camera", "camera_light", "gopro_accessories"],
+                "phrases": ["mirrorless_camera", "camera_light", "gopro_accessories"],
                 "phrase_details": {
                     "ps4_games": {
                         "category": "c5609",
@@ -60,14 +60,14 @@ default_configs = {
                 "class": "SheypoorSearcher",
                 "module": "main.resources.searchers.sheypoor_searcher",
                 "base_url": "http://www.sheypoor.com/search",
-                "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo"]
+                "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo", "MJLQ2", "MJLT2"]
             },
             "divar": {
                 "enabled": True,
                 "class": "DivarSearcher",
                 "module": "main.resources.searchers.divar_searcher",
                 "base_url": "https://search.divar.ir/json/",
-                "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo"]
+                "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo", "MJLQ2", "MJLT2"]
             },
             "afrang_timeline": {
                 "enabled": True,
