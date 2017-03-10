@@ -15,7 +15,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "http://search.digikala.com/api/search",
-                "phrases": ["mirrorless_camera", "camera_light", "gopro_accessories"],
+                "phrases": ["mirrorless_camera", "camera_light", "adsl-modem-5g", "large_external_hdd"],
                 "phrase_details": {
                     "ps4_games": {
                         "category": "c5609",
@@ -44,8 +44,13 @@ default_configs = {
                     },
                     "large_external_hdd": {
                         "category": "c68",
+                        "type": "242",
+                        "attributes": ["A604V4378", "A606V1073", "A8670V7477", "A6516V4372"]
+                    },
+                    "adsl-modem-5g": {
+                        "category": "c5721",
                         "type": "",
-                        "attributes": ["A606V1074", "A606V1075", "A606V1518", "A606V1519", "A606V18497", "A606V30937"]
+                        "attributes": ["A18359V21726"]
                     }
                 }
             },
