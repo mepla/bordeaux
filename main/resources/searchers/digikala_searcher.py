@@ -29,7 +29,8 @@ class DigikalaSearcher(BaseSearcher):
 
             attribs = categories.get(cat).get('attributes')
             if attribs:
-                search_url += '&attribute={}'.format(' '.join(attribs))
+                for attr in attribs:
+                    search_url += '&attribute={}'.format(attr)
 
             brand = categories.get(cat).get('brand')
             if brand:
