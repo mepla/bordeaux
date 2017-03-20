@@ -49,7 +49,7 @@ class MongoDatabase(DocumentDatabaseBase):
         self._mongo_client = MongoClient(host, port)
 
         if db == 'items':
-            self._mongo_db = self._mongo_client.items
+            self._mongo_db = self._mongo_client[db]
         else:
             raise DatabaseNotFound('The database you requested was not found: {}'.format(db))
 
