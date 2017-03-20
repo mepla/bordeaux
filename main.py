@@ -28,8 +28,9 @@ if __name__ == '__main__':
     for hdl in logger.handlers:
         logger.removeHandler(hdl)
     logger.addHandler(handler)
-    logger.addHandler(handler)
     logger.setLevel('DEBUG')
+
+    logging.getLogger("requests").setLevel(logging.WARNING)
 
     try:
         if not results.report:

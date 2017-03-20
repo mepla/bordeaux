@@ -5,10 +5,10 @@ import re
 import requests
 
 from main.data_types.item import Item
-from main.resources.searchers.base_searcher import BaseSearcher
+from main.resources.searchers.base_searcher import BaseSearcher, ThreadedSearcher
 
 
-class DivarSearcher(BaseSearcher):
+class DivarSearcher(ThreadedSearcher):
 
     def _post_params(self, qry):
         return {
@@ -24,29 +24,35 @@ class DivarSearcher(BaseSearcher):
         }
 
     def start_search(self):
-        results = []
         search_queries = list(self.search_phrases)
         for qry in search_queries:
-            post_param = self._post_params(qry)
-            logging.debug('Divar searching for {}: {}'.format(qry, self.base_url))
+            self.do_the_job(self.perform_search_query, (qry,))
 
-            try:
-                result = requests.post(self.base_url, json=post_param, timeout=10)
-            except Exception as exc:
-                logging.error('Divar search failed to connect `{}`)'.format(qry))
-                continue
+        return self.return_results(self._refine_items)
 
-            if not (200 <= result.status_code < 300):
-                logging.error('Divar search failed for `{}`: ({} -> {})'.format(self.base_url, result.status_code, result.content))
-                continue
+    def perform_search_query(self, qry):
+        local_all_results = []
+        post_param = self._post_params(qry)
+        logging.debug('Divar searching for {}: {}'.format(qry, self.base_url))
 
-            res_array = result.json().get('result').get('post_list')
-            for item_doc in res_array:
-                item = self.create_item(item_doc, qry, self.base_url)
-                if item:
-                    results.append(item)
+        try:
+            result = requests.post(self.base_url, json=post_param, timeout=10)
+        except Exception as exc:
+            logging.error('Divar search failed to connect `{}`)'.format(qry))
+            return []
 
-        return self._refine_items(results)
+        if not (200 <= result.status_code < 300):
+            logging.error(
+                'Divar search failed for `{}`: ({} -> {})'.format(self.base_url, result.status_code, result.content))
+            return []
+
+        res_array = result.json().get('result').get('post_list')
+        for item_doc in res_array:
+            item = self.create_item(item_doc, qry, self.base_url)
+            if item:
+                local_all_results.append(item)
+
+        return local_all_results
 
     def create_item(self, item_doc, search_phrase=None, search_url=None):
         g = Item()

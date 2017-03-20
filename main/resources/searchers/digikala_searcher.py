@@ -2,55 +2,63 @@
 
 import datetime
 import os
-
+import math
 import requests
 import logging
 
 from main.data_types.item import Item
-from main.resources.searchers.base_searcher import BaseSearcher
+from main.resources.searchers.base_searcher import ThreadedSearcher, BaseSearcher
 
 
-class DigikalaSearcher(BaseSearcher):
+class DigikalaSearcher(ThreadedSearcher):
 
     def start_search(self):
-        all_results = []
         search_queries = list(self.search_phrases)
 
-        categories = self.searcher_conf.get('phrase_details')
-
         for cat in search_queries:
-            if cat not in categories:
-                logging.warn('There is no defined category in Digikala for: {}, Skipping...'.format(cat))
-                continue
+            self.do_the_job(self.perform_search_query, (cat,))
 
-            page_no = 0
-            page_size = 100
-            search_url = '{}/?category={}&status=2&pageSize={}&pageno={}'.format(self.base_url, categories.get(cat).get('category'), page_size, page_no)
+        return self.return_results()
 
-            attribs = categories.get(cat).get('attributes')
-            if attribs:
-                for attr in attribs:
-                    search_url += '&attribute={}'.format(attr)
+    def perform_search_query(self, cat):
+        local_all_results = []
+        categories = self.searcher_conf.get('phrase_details')
+        if cat not in categories:
+            logging.warn('There is no defined category in Digikala for: {}, Skipping...'.format(cat))
+            return []
 
-            brand = categories.get(cat).get('brand')
-            if brand:
-                search_url += '&brand={}'.format(brand)
+        page_no = 0
+        page_size = 100
+        search_url = '{}/?category={}&status=2&pageSize={}&pageno={}'.format(self.base_url,
+                                                                             categories.get(cat).get('category'),
+                                                                             page_size, page_no)
 
-            q_type = categories.get(cat).get('type')
-            if q_type:
-                search_url += '&type={}'.format(q_type)
+        attribs = categories.get(cat).get('attributes')
+        if attribs:
+            for attr in attribs:
+                search_url += '&attribute={}'.format(attr)
 
+        brand = categories.get(cat).get('brand')
+        if brand:
+            search_url += '&brand={}'.format(brand)
+
+        q_type = categories.get(cat).get('type')
+        if q_type:
+            search_url += '&type={}'.format(q_type)
+
+        page_results, page_count, total_count = self.search_and_add(search_url, cat)
+        if not total_count:
+            return []
+
+        local_all_results.extend(page_results)
+
+        further_pages = int(math.ceil(float(total_count) / float(page_count)))
+        for i in range(1, further_pages):
+            search_url = search_url.replace('pageno={}'.format(i - 1), 'pageno={}'.format(i))
             page_results, page_count, total_count = self.search_and_add(search_url, cat)
-            if not total_count:
-                continue
-            all_results.extend(page_results)
-            further_pages = int(total_count/page_count) + 1
-            for i in range(1, further_pages):
-                search_url = search_url.replace('pageno={}'.format(i-1), 'pageno={}'.format(i))
-                page_results, page_count, total_count = self.search_and_add(search_url, cat)
-                all_results.extend(page_results)
+            local_all_results.extend(page_results)
 
-        return all_results
+        return local_all_results
 
     def search_and_add(self, search_url, cat):
         results = []

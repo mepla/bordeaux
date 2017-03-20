@@ -1,6 +1,4 @@
 # -*- coding: UTF-8 -*-
-
-
 import importlib
 import logging
 
@@ -18,6 +16,9 @@ class SearchController(object):
 
     def start_search(self):
         aggregate_results = {}
+        import time
+
+        start = time.time()
         for searcher_name, searcher_data in self.searchers.items():
             enabled = searcher_data.get('enabled')
             if enabled is not True:
@@ -25,11 +26,12 @@ class SearchController(object):
                 continue
             module = importlib.import_module(searcher_data.get('module'))
             class_ = getattr(module, searcher_data.get('class'))
-            instance = class_(searcher_data.get('base_url'), searcher_data.get('phrases'), searcher_data)
+            instance = class_(searcher_data.get('base_url'), searcher_data.get('phrases', []), searcher_data)
             instance_results = instance.start_search()
 
             aggregate_results[searcher_name] = instance_results
 
+        print time.time() - start
         all_new_items = []
         all_price_changes = []
         all_special_items = []

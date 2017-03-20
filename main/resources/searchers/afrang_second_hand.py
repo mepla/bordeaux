@@ -5,10 +5,10 @@ import requests
 import bs4
 from bs4.element import Tag
 from main.data_types.item import Item
-from main.resources.searchers.base_searcher import BaseSearcher
+from main.resources.searchers.base_searcher import BaseSearcher, ThreadedSearcher
 
 
-class AfrangSecondHandSearcher(BaseSearcher):
+class AfrangSecondHandSearcher(ThreadedSearcher):
 
     def start_search(self):
         results = []
@@ -16,26 +16,30 @@ class AfrangSecondHandSearcher(BaseSearcher):
         search_queries = list(self.search_phrases)
 
         for qry in search_queries:
-            search_url = '{}?Query={}'.format(self.base_url, qry)
-
-            try:
-                result = requests.get(search_url, timeout=10)
-            except Exception as exc:
-                logging.error('Afrang search failed to connect `{}`'.format(qry))
-                continue
-
-            if not (200 <= result.status_code < 300):
-                logging.error('Afrang search failed for `{}`: ({} -> {})'.format(qry, result.status_code, result.content))
-                continue
-
-            soup = bs4.BeautifulSoup(result.content, 'html.parser')
-            all_divs = soup.find_all('div')
-            for div in all_divs:
-                g = self.create_item(div)
-                if g and g.link not in results:
-                    results.append(g)
+            self.do_the_job(self.perform_search_query, (qry,))
 
         return results
+
+    def perform_search_query(self, qry):
+        local_all_results = []
+        search_url = '{}?Query={}'.format(self.base_url, qry)
+
+        try:
+            result = requests.get(search_url, timeout=10)
+        except Exception as exc:
+            logging.error('Afrang search failed to connect `{}`'.format(qry))
+            return []
+
+        if not (200 <= result.status_code < 300):
+            logging.error('Afrang search failed for `{}`: ({} -> {})'.format(qry, result.status_code, result.content))
+            return []
+
+        soup = bs4.BeautifulSoup(result.content, 'html.parser')
+        all_divs = soup.find_all('div')
+        for div in all_divs:
+            g = self.create_item(div)
+            if g and g.link not in local_all_results:
+                local_all_results.append(g)
 
     def create_item(self, div, search_phrase=None, search_url=None):
         g = Item()

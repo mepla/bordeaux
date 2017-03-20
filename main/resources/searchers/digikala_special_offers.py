@@ -7,21 +7,23 @@ import requests
 import logging
 
 from main.data_types.item import Item, SpecialItem
-from main.resources.searchers.base_searcher import BaseSearcher
+from main.resources.searchers.base_searcher import BaseSearcher, ThreadedSearcher
 
 
-class DigikalaSpecialOfferSearch(BaseSearcher):
+class DigikalaSpecialOfferSearch(ThreadedSearcher):
 
     def start_search(self):
-        results = []
+        self.do_the_job(self.perform_search_query)
+        return self.return_results()
 
+    def perform_search_query(self):
+        local_all_results = []
         search_url = self.base_url
-
         logging.debug('Digikala special searching for special items: {}'.format(search_url))
         try:
             result = requests.get(search_url, timeout=10)
         except Exception as exc:
-            logging.error('Digikala special search failed to connect `{}`)'.format(search_url))
+            logging.error('Digikala special search failed to connect: {}'.format(search_url))
             return []
 
         if not (200 <= result.status_code < 300):
@@ -32,9 +34,9 @@ class DigikalaSpecialOfferSearch(BaseSearcher):
         for item_doc in item_docs:
             item = self.create_item(item_doc.get('_source'), 'digikala_special_items', search_url)
             if item:
-                results.append(item)
+                local_all_results.append(item)
 
-        return results
+        return local_all_results
 
     def create_item(self, item_doc, search_phrase=None, search_url=None):
         g = SpecialItem()

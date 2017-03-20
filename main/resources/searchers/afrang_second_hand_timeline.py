@@ -6,36 +6,41 @@ import requests
 import bs4
 from bs4.element import Tag
 from main.data_types.item import Item
-from main.resources.searchers.base_searcher import BaseSearcher
+from main.resources.searchers.base_searcher import BaseSearcher, ThreadedSearcher
 
 
-class AfrangSecondHandTimelineSearcher(BaseSearcher):
+class AfrangSecondHandTimelineSearcher(ThreadedSearcher):
 
     def start_search(self):
-        results = []
-
         for i in range(1, 3):
-            search_url = self.base_url.rstrip('/') + '?page={}'.format(i)
-            logging.debug('Afrang timeline searching for page {}: {}'.format(i, search_url))
-            try:
-                result = requests.get(search_url, timeout=10)
-            except Exception as exc:
-                logging.error(
-                    'Afrang timeline search failed to connect `{}`)'.format(search_url))
-                continue
+            self.do_the_job(self.perform_search_query, (i,))
 
-            if not (200 <= result.status_code < 300):
-                logging.error('Afrang timeline search failed for `{}`: ({} -> {})'.format(search_url, result.status_code, result.content))
-                continue
+        return self.return_results(self._refine_items)
 
-            soup = bs4.BeautifulSoup(result.content, 'html.parser')
-            all_divs = soup.find_all('div', {'class': 'row-box-item box-s-3'})
-            for div in all_divs:
-                g = self.create_item(div)
-                if g:
-                    results.append(g)
+    def perform_search_query(self, index):
+        local_all_results = []
+        search_url = self.base_url.rstrip('/') + '?page={}'.format(index)
+        logging.debug('Afrang timeline searching for page {}: {}'.format(index, search_url))
+        try:
+            result = requests.get(search_url, timeout=10)
+        except Exception as exc:
+            logging.error(
+                'Afrang timeline search failed to connect `{}`)'.format(search_url))
+            return []
 
-        return self._refine_items(results)
+        if not (200 <= result.status_code < 300):
+            logging.error('Afrang timeline search failed for `{}`: ({} -> {})'.format(search_url, result.status_code,
+                                                                                      result.content))
+            return []
+
+        soup = bs4.BeautifulSoup(result.content, 'html.parser')
+        all_divs = soup.find_all('div', {'class': 'row-box-item box-s-3'})
+        for div in all_divs:
+            g = self.create_item(div)
+            if g:
+                local_all_results.append(g)
+
+        return local_all_results
 
     def create_item(self, div, search_phrase=None, search_url=None):
         g = Item()

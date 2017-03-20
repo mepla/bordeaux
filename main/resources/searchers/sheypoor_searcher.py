@@ -8,41 +8,47 @@ import bs4
 import requests
 
 from main.data_types.item import Item
-from main.resources.searchers.base_searcher import BaseSearcher
+from main.resources.searchers.base_searcher import BaseSearcher, ThreadedSearcher
 
 
-class SheypoorSearcher(BaseSearcher):
+class SheypoorSearcher(ThreadedSearcher):
 
     def start_search(self):
-        results = []
         search_queries = list(self.search_phrases)
         for qry in search_queries:
-            search_url = self.base_url + '?q={}&c=&r=8'.format(qry)
-            logging.debug('Sheypoor searching for {}: {}'.format(qry, self.base_url))
-            try:
-                sheypoor_res = requests.get(search_url, timeout=10)
-            except Exception as exc:
-                logging.error('Sheypoor search failed to connect `{}`)'.format(qry))
-                continue
+            self.do_the_job(self.perform_search_query, (qry,))
 
-            if not (200 <= sheypoor_res.status_code < 300):
-                logging.error('Sheypoor search failed for `{}`: ({} -> {})'.format(qry, sheypoor_res.status_code, sheypoor_res.content))
-                continue
+        return self.return_results(self._refine_items)
 
-            soup = bs4.BeautifulSoup(sheypoor_res.content, 'html.parser')
-            sec = soup.find('section', id='serp')
+    def perform_search_query(self, qry):
+        local_all_results = []
+        search_url = self.base_url + '?q={}&c=&r=8'.format(qry)
+        logging.debug('Sheypoor searching for {}: {}'.format(qry, self.base_url))
+        try:
+            sheypoor_res = requests.get(search_url, timeout=10)
+        except Exception as exc:
+            logging.error('Sheypoor search failed to connect `{}`)'.format(qry))
+            return []
 
-            if not sec:
-                logging.debug("No item found for sheypoor search: `{}`".format(qry))
-                continue
+        if not (200 <= sheypoor_res.status_code < 300):
+            logging.error('Sheypoor search failed for `{}`: ({} -> {})'.format(qry, sheypoor_res.status_code,
+                                                                               sheypoor_res.content))
+            return []
 
-            all_item_medium = sec.find_all('article', {'class': 'item-medium'})
-            for item_tag in all_item_medium:
-                item = self.create_item(item_tag, qry, search_url)
-                if item:
-                    results.append(item)
+        soup = bs4.BeautifulSoup(sheypoor_res.content, 'html.parser')
+        sec = soup.find('section', id='serp')
 
-        return self._refine_items(results)
+        if not sec:
+            logging.debug("No item found for sheypoor search: `{}`".format(qry))
+            return []
+
+        all_item_medium = sec.find_all('article', {'class': 'item-medium'})
+        for item_tag in all_item_medium:
+            item = self.create_item(item_tag, qry, search_url)
+            if item:
+                local_all_results.append(item)
+
+        return local_all_results
 
     def create_item(self, sec, search_phrase=None, search_url=None):
         assert isinstance(sec, Tag)
