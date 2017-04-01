@@ -36,7 +36,7 @@ class DigikalaSearcher(ThreadedSearcher):
         attribs = categories.get(cat).get('attributes')
         if attribs:
             for attr in attribs:
-                search_url += '&attribute={}'.format(attr)
+                search_url += '&attribute={}'.format('%20'.join(attr))
 
         brand = categories.get(cat).get('brand')
         if brand:

@@ -15,7 +15,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "http://search.digikala.com/api/search",
-                "phrases": ["mirrorless_camera", "camera_light", "adsl-modem-5g", "large_external_hdd"],
+                "phrases": ["mirrorless_camera", "camera_light", "laptop_i7"],
                 "phrase_details": {
                     "ps4_games": {
                         "category": "c5609",
@@ -45,12 +45,17 @@ default_configs = {
                     "large_external_hdd": {
                         "category": "c68",
                         "type": "242",
-                        "attributes": ["A604V4378", "A606V1073", "A8670V7477", "A6516V4372"]
+                        "attributes": [["A604V4378"], ["A606V1073"], ["A8670V7477"], ["A6516V4372"]]
                     },
                     "adsl-modem-5g": {
                         "category": "c5721",
                         "type": "",
                         "attributes": ["A18359V21726"]
+                    },
+                    "laptop_i7": {
+                        "category": "c18",
+                        "type": "",
+                        "attributes": [["A303V432"], ["A308V32309", "A308V472", "A308V8560"]]
                     }
                 }
             },
