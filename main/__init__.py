@@ -15,7 +15,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "http://search.digikala.com/api/search",
-                "phrases": ["mirrorless_camera", "camera_light", "laptop_i7"],
+                "phrases": ["mirrorless_camera", "camera_light", "mechanical_keyboard"],
                 "phrase_details": {
                     "ps4_games": {
                         "category": "c5609",
@@ -56,6 +56,10 @@ default_configs = {
                         "category": "c18",
                         "type": "",
                         "attributes": [["A303V432"], ["A308V32309", "A308V472", "A308V8560"]]
+                    },
+                    "mechanical_keyboard": {
+                        "category": "c27",
+                        "type": "5226"
                     }
                 }
             },
