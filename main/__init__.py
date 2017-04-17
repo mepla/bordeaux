@@ -15,7 +15,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "http://search.digikala.com/api/search",
-                "phrases": ["mirrorless_camera", "camera_light", "mechanical_keyboard"],
+                "phrases": ["mirrorless_camera", "camera_light", "mechanical_keyboard", "4k_monitor"],
                 "phrase_details": {
                     "ps4_games": {
                         "category": "c5609",
@@ -60,6 +60,11 @@ default_configs = {
                     "mechanical_keyboard": {
                         "category": "c27",
                         "type": "5226"
+                    },
+                    "4k_monitor": {
+                        "category": "c24",
+                        "type": "",
+                        "attributes": [["A23139V31332"]]
                     }
                 }
             },
