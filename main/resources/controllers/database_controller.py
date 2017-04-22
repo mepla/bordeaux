@@ -1,4 +1,7 @@
 import datetime
+
+import logging
+
 from main.store.database_drivers import MongoDatabase, DatabaseRecordNotFound, DatabaseEmptyResult
 from main.utils.general_utils import base64
 
@@ -16,11 +19,14 @@ class DatabaseController(object):
         self.price_change_items = []
         self.special_items = []
         for item in array_of_items:
-            item.id = base64(item.link)
-            item.last_update = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-            self._handle_item(item)
-            if item.type == 'special_item':
-                self._handle_special_item(item)
+            try:
+                item.id = base64(item.link)
+                item.last_update = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+                self._handle_item(item)
+                if item.type == 'special_item':
+                    self._handle_special_item(item)
+            except Exception as exc:
+                logging.error('Could not analyze_and_save item: {} \n {}'.format(item.link, exc))
 
         return self.new_items, self.price_change_items, self.special_items
 
