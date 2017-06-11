@@ -14,7 +14,7 @@ default_configs = {
                 "enabled": True,
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
-                "base_url": "https://www.digikala.com/api/SearchApi",
+                "base_url": "http://search.digikala.com/api/search",
                 "phrases": ["mirrorless_camera", "camera_light", "4k_monitor", "gaming_mouse"],
                 "phrase_details": {
                     "ps4_games": {
