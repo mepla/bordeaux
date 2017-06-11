@@ -14,7 +14,7 @@ default_configs = {
                 "enabled": True,
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
-                "base_url": "http://search.digikala.com/api/search",
+                "base_url": "https://www.digikala.com/api/SearchApi",
                 "phrases": ["mirrorless_camera", "camera_light", "4k_monitor", "gaming_mouse"],
                 "phrase_details": {
                     "ps4_games": {
@@ -73,27 +73,27 @@ default_configs = {
                 }
             },
             "digikala_special_items": {
-                "enabled": True,
+                "enabled": False,
                 "class": "DigikalaSpecialOfferSearch",
                 "module": "main.resources.searchers.digikala_special_offers",
                 "base_url": "http://search.digikala.com/api2/Data/Get?categoryId=0&ip=0",
             },
             "sheypoor": {
-                "enabled": True,
+                "enabled": False,
                 "class": "SheypoorSearcher",
                 "module": "main.resources.searchers.sheypoor_searcher",
                 "base_url": "http://www.sheypoor.com/search",
                 "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo", "MJLQ2", "MJLT2"]
             },
             "divar": {
-                "enabled": True,
+                "enabled": False,
                 "class": "DivarSearcher",
                 "module": "main.resources.searchers.divar_searcher",
                 "base_url": "https://search.divar.ir/json/",
                 "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo", "MJLQ2", "MJLT2"]
             },
             "afrang_timeline": {
-                "enabled": True,
+                "enabled": False,
                 "class": "AfrangSecondHandTimelineSearcher",
                 "module": "main.resources.searchers.afrang_second_hand_timeline",
                 "base_url": "http://www.afrangdigital.com/Useds/-1",

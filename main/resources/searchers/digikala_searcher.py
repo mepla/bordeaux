@@ -95,7 +95,11 @@ class DigikalaSearcher(ThreadedSearcher):
             try:
                 g.creation_date = datetime.datetime.strptime(item_doc.get('RegDateTime'), '%Y-%m-%dT%H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
             except:
-                g.creation_date = datetime.datetime.strptime(item_doc.get('RegDateTime'), '%Y-%m-%dT%H:%M:%S.%f').strftime('%Y-%m-%d %H:%M:%S')
+                try:
+                    g.creation_date = datetime.datetime.strptime(item_doc.get('RegDateTime'), '%Y-%m-%dT%H:%M:%S.%f').strftime('%Y-%m-%d %H:%M:%S')
+                except:
+                    pass
+
             g.title = item_doc.get('FaTitle')
             g.name = item_doc.get('EnTitle')
             g.image_link = os.path.join('http://file.digikala.com/Digikala', item_doc.get('ImagePath'))
