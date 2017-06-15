@@ -73,27 +73,27 @@ default_configs = {
                 }
             },
             "digikala_special_items": {
-                "enabled": False,
+                "enabled": True,
                 "class": "DigikalaSpecialOfferSearch",
                 "module": "main.resources.searchers.digikala_special_offers",
                 "base_url": "http://search.digikala.com/api2/Data/Get?categoryId=0&ip=0",
             },
             "sheypoor": {
-                "enabled": False,
+                "enabled": True,
                 "class": "SheypoorSearcher",
                 "module": "main.resources.searchers.sheypoor_searcher",
                 "base_url": "http://www.sheypoor.com/search",
                 "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo", "MJLQ2", "MJLT2"]
             },
             "divar": {
-                "enabled": False,
+                "enabled": True,
                 "class": "DivarSearcher",
                 "module": "main.resources.searchers.divar_searcher",
                 "base_url": "https://search.divar.ir/json/",
                 "phrases": ["fujifilm", "fuji", "fujinon", "فوجی", "فوجی فیلم", "yongnuo", "MJLQ2", "MJLT2"]
             },
             "afrang_timeline": {
-                "enabled": False,
+                "enabled": True,
                 "class": "AfrangSecondHandTimelineSearcher",
                 "module": "main.resources.searchers.afrang_second_hand_timeline",
                 "base_url": "http://www.afrangdigital.com/Useds/-1",
