@@ -9,66 +9,41 @@ default_configs = {
             "port": 27017
         }
     },
+    ""
     "searchers": {
             "digikala": {
                 "enabled": True,
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
-                "base_url": "http://search.digikala.com/api/search",
-                "phrases": ["mirrorless_camera", "camera_light", "4k_monitor", "gaming_mouse"],
+                "base_url": "https://search.digikala.com/api/SearchApi",
+                "phrases": ["camera_light", "camera_flash", "mirrorless_camera", "4k_monitor", "fujinon_lenses"],
                 "phrase_details": {
-                    "ps4_games": {
-                        "category": "c5609",
-                        "type": "4801"
+                    "sample_conf": {
+                        "urlCode": "url_code_from_digikala",
+                        "brands": ["15", "10"],
+                        "types": ["8", "12"],
+                        "attributes": {
+                            "4": ["1", "2"],
+                            "6": ["2", "4"]
+                        }
                     },
                     "camera_light": {
-                        "category": "c111",
-                        "type": ""
-                    },
-                    "gopro_accessories": {
-                        "category": "c1345",
-                        "type": ""
-                    },
-                    "gopro": {
-                        "category": "c49",
-                        "type": "",
-                        "brand": "76"
+                        "urlCode": "lighting-tools"
                     },
                     "camera_flash": {
-                        "category": "c108",
-                        "type": ""
+                        "urlCode": "external-flash"
                     },
                     "mirrorless_camera": {
-                        "category": "c48",
-                        "type": "8"
-                    },
-                    "large_external_hdd": {
-                        "category": "c68",
-                        "type": "242",
-                        "attributes": [["A604V4378"], ["A606V1073"], ["A8670V7477"], ["A6516V4372"]]
-                    },
-                    "adsl-modem-5g": {
-                        "category": "c5721",
-                        "type": "",
-                        "attributes": ["A18359V21726"]
-                    },
-                    "laptop_i7": {
-                        "category": "c18",
-                        "type": "",
-                        "attributes": [["A303V432"], ["A308V32309", "A308V472", "A308V8560"]]
-                    },
-                    "mechanical_keyboard": {
-                        "category": "c27",
-                        "type": "5226"
+                        "urlCode": "digital-camera",
+                        "types": ["8"]
                     },
                     "4k_monitor": {
-                        "category": "c24",
-                        "type": "",
-                        "attributes": [["A23139V31332"]]
+                        "urlCode": "monitor",
+                        "attributes": {"23139": ["31331", "31332", "31333", "31334"]}
                     },
-                    "gaming_mouse": {
-                        "category": "c26",
-                        "type": "6170"
+                    "fujinon_lenses": {
+                        "urlCode": "camera-lens",
+                        "brands": ["15"]
                     }
                 }
             },

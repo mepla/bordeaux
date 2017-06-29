@@ -29,22 +29,22 @@ class DigikalaSearcher(ThreadedSearcher):
 
         page_no = 0
         page_size = 100
-        search_url = '{}/?category={}&status=2&pageSize={}&pageno={}'.format(self.base_url,
-                                                                             categories.get(cat).get('category'),
+        search_url = '{}?urlCode={}&status=2&pageSize={}&pageno={}'.format(self.base_url,
+                                                                             categories.get(cat).get('urlCode'),
                                                                              page_size, page_no)
 
-        attribs = categories.get(cat).get('attributes')
-        if attribs:
-            for attr in attribs:
-                search_url += '&attribute={}'.format('%20'.join(attr))
+        attribs = categories.get(cat).get('attributes', {})
+        for key, attrib_values in attribs.items():
+            for i, attrib_value in enumerate(attrib_values):
+                search_url += '&attribute[{}][{}]={}'.format(key, i, attrib_value)
 
-        brand = categories.get(cat).get('brand')
-        if brand:
-            search_url += '&brand={}'.format(brand)
+        brands = categories.get(cat).get('brands', [])
+        for i, brand in enumerate(brands):
+            search_url += '&brand[{}]={}'.format(i, brand)
 
-        q_type = categories.get(cat).get('type')
-        if q_type:
-            search_url += '&type={}'.format(q_type)
+        q_types = categories.get(cat).get('types', [])
+        for i, q_type in enumerate(q_types):
+            search_url += '&type[{}]={}'.format(i, q_type)
 
         page_results, page_count, total_count = self.search_and_add(search_url, cat)
         if not total_count:
