@@ -46,6 +46,15 @@ class DigikalaSearcher(ThreadedSearcher):
         for i, q_type in enumerate(q_types):
             search_url += '&type[{}]={}'.format(i, q_type)
 
+        price = categories.get(cat).get('price', [])
+        if price:
+            min_price = price.get('min')
+            max_price = price.get('max')
+            if min_price:
+                search_url += "&price[min]={}".format(min_price)
+            if max_price:
+                search_url += "&price[max]={}".format(max_price)
+
         page_results, page_count, total_count = self.search_and_add(search_url, cat)
         if not total_count:
             return []

@@ -16,7 +16,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "https://search.digikala.com/api/SearchApi",
-                "phrases": ["camera_light", "camera_flash", "mirrorless_camera", "4k_monitor", "fujinon_lenses"],
+                "phrases": ["camera_light", "camera_flash", "mirrorless_camera", "4k_monitor", "fujinon_lenses", "gaming_laptop_under4"],
                 "phrase_details": {
                     "sample_conf": {
                         "urlCode": "url_code_from_digikala",
@@ -44,6 +44,23 @@ default_configs = {
                     "fujinon_lenses": {
                         "urlCode": "camera-lens",
                         "brands": ["15"]
+                    },
+                    "gaming_laptop_under4": {
+                        "urlCode": "Notebook-Netbook-Ultrabook",
+                        "attributes": {
+                            "14251": ["14730"],
+                        },
+                        "price": {
+                            "max": "4024184"
+                        }
+                    },
+                    "laptop_2.4-3": {
+                        "urlCode": "Notebook-Netbook-Ultrabook",
+
+                        "price": {
+                            "max": "3000000",
+                            "min": "2400000"
+                        }
                     }
                 }
             },
