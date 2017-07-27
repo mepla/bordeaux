@@ -16,7 +16,7 @@ default_configs = {
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "https://search.digikala.com/api/SearchApi",
-                "phrases": ["camera_light", "camera_flash", "mirrorless_camera", "4k_monitor", "fujinon_lenses", "gaming_laptop_under4"],
+                "phrases": ["camera_light", "camera_flash", "mirrorless_camera", "4k_monitor", "fujinon_lenses"],
                 "phrase_details": {
                     "sample_conf": {
                         "urlCode": "url_code_from_digikala",
