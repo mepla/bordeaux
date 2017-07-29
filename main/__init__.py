@@ -9,14 +9,13 @@ default_configs = {
             "port": 27017
         }
     },
-    ""
     "searchers": {
             "digikala": {
                 "enabled": True,
                 "class": "DigikalaSearcher",
                 "module": "main.resources.searchers.digikala_searcher",
                 "base_url": "https://search.digikala.com/api/SearchApi",
-                "phrases": ["camera_light", "camera_flash", "mirrorless_camera", "4k_monitor", "fujinon_lenses"],
+                "phrases": ["sample_conf"],
                 "phrase_details": {
                     "sample_conf": {
                         "urlCode": "url_code_from_digikala",
@@ -26,41 +25,6 @@ default_configs = {
                             "4": ["1", "2"],
                             "6": ["2", "4"]
                         }
-                    },
-                    "camera_light": {
-                        "urlCode": "lighting-tools"
-                    },
-                    "camera_flash": {
-                        "urlCode": "external-flash"
-                    },
-                    "mirrorless_camera": {
-                        "urlCode": "digital-camera",
-                        "types": ["8"]
-                    },
-                    "4k_monitor": {
-                        "urlCode": "monitor",
-                        "attributes": {"23139": ["31331", "31332", "31333", "31334"]}
-                    },
-                    "fujinon_lenses": {
-                        "urlCode": "camera-lens",
-                        "brands": ["15"]
-                    },
-                    "gaming_laptop_under4": {
-                        "urlCode": "Notebook-Netbook-Ultrabook",
-                        "attributes": {
-                            "14251": ["14730"],
-                        },
-                        "price": {
-                            "max": "4024184"
-                        }
-                    },
-                    "laptop_2.4-3": {
-                        "urlCode": "Notebook-Netbook-Ultrabook",
-
-                        "price": {
-                            "max": "3000000",
-                            "min": "2400000"
-                        }
                     }
                 }
             },
@@ -68,7 +32,7 @@ default_configs = {
                 "enabled": True,
                 "class": "DigikalaSpecialOfferSearch",
                 "module": "main.resources.searchers.digikala_special_offers",
-                "base_url": "http://search.digikala.com/api2/Data/Get?categoryId=0&ip=0",
+                "base_url": "http://search.digikala.com/api2/Data/Get?categoryId=0&ip=0"
             },
             "sheypoor": {
                 "enabled": True,
