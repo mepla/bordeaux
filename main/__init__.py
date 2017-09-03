@@ -69,7 +69,8 @@ default_configs = {
             "from_password": "XT2forthewin",
             "smtp_server": "smtp.gmail.com",
             "smtp_port": "587",
-            "to_address": "soheil.nasirian@gmail.com"
+            "to_address": "soheil.nasirian@gmail.com",
+            "change_percent_threshold": 5
         }
     }
 }

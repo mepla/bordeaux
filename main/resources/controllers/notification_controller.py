@@ -26,6 +26,7 @@ class NotificationController(NotificationControllerBase):
     def notify_special_items(self, special_items):
         map(lambda x: x.notify_special_items(special_items), self._notifiers)
 
+
 class NotifierBase(object):
     def notify_new(self, items):
         pass
@@ -61,6 +62,7 @@ class EmailNotifier(NotifierBase):
         self._server = email_configs.get('smtp_server')
         self._port = email_configs.get('smtp_port')
         self._to = email_configs.get('to_address')
+        self._change_percent_threshold = int(email_configs.get('change_percent_threshold', 10))
 
     def send_mail(self, to, subject, body=''):
         if not to:
@@ -94,16 +96,25 @@ class EmailNotifier(NotifierBase):
         self.send_mail(self._to, '{} New Item{}'.format(count, 's' if count > 1 else ''), body)
 
     def notify_change_price(self, items):
-        count = len(items)
+        count = 0
         body = ''
         for item in items:
             data = item.to_json(summarize=True)
+            try:
+                last_percent = data.get('price_history')[-1].get('percent')
+                if abs(int(last_percent)) < self._change_percent_threshold:
+                    continue
+            except:
+                pass
+
+            count += 1
             if item.image_link:
                 data['image'] = '<img src="{}" width=auto height=120 >'.format(item.image_link)
             html_doc = json2html.convert(json=data).replace('<li>', '').replace('</li>', '').replace('<ul>', '').replace('</ul>', '')
             body += u'{}<br> </br>'.format(html_doc)
 
-        self.send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
+        if count:
+            self.send_mail(self._to, '{} Price Change{}'.format(count, 's' if count > 1 else ''), body)
 
     def notify_special_items(self, items):
         count = len(items)
