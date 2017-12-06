@@ -111,7 +111,7 @@ class DigikalaSearcher(ThreadedSearcher):
 
             g.title = item_doc.get('FaTitle')
             g.name = item_doc.get('EnTitle')
-            g.image_link = os.path.join('http://file.digikala.com/Digikala', item_doc.get('ImagePath'))
+            g.image_link = os.path.join('http://file.digi-kala.com/Digikala', item_doc.get('ImagePath'))
             g.is_second_hand = False
             g.link = 'http://www.digikala.com/Product/DKP-{}'.format(item_doc.get('Id'))
 
