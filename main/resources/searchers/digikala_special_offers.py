@@ -68,7 +68,7 @@ class DigikalaSpecialOfferSearch(ThreadedSearcher):
             g.name = item_doc.get('EnTitle')
             g.is_second_hand = False
 
-            g.image_link = os.path.join('http://file.digikala.com/Digikala', item_doc.get('ProductImagePath'))
+            g.image_link = os.path.join('http://file.digi-kala.com/Digikala', item_doc.get('ProductImagePath'))
             g.link = 'http://www.digikala.com/Product/DKP-{}'.format(item_doc.get('ProductId'))
 
             return g
