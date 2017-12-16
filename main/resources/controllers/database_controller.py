@@ -38,6 +38,13 @@ class DatabaseController(object):
             if not item.price_history:
                 item.price_history = [{'price': item.price, 'date': item.last_update}]
 
+            existing_special_item = self.db.find_doc('id', item.id, 'special_item')
+            if existing_special_item:
+                special_start_date = datetime.datetime.strptime(existing_special_item.get('start_date'), "%Y-%m-%d %H:%M:%S").date()
+                now_date = datetime.datetime.utcnow().date()
+                if special_start_date == now_date:
+                    return
+
             last_price = item.price_history[-1].get('price')
             if last_price != item.price:
                 price_diff = last_price - item.price
