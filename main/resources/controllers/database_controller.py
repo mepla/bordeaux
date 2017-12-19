@@ -22,6 +22,7 @@ class DatabaseController(object):
             try:
                 item.id = base64(item.link)
                 item.last_update = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+
                 self._handle_item(item)
                 if item.type == 'special_item':
                     self._handle_special_item(item)
@@ -60,7 +61,7 @@ class DatabaseController(object):
                 item.price_history.append({'price': item.price, 'date': item.last_update, 'percent': change_percent})
                 self.price_change_items.append(item)
 
-            self.db.delete('item', {'id': item.id})
+            self.db.delete('item', {'id': item.id}, multiple=True)
             self.db.save(item.to_json(), 'item')
 
         except (DatabaseRecordNotFound, DatabaseEmptyResult):
@@ -80,7 +81,7 @@ class DatabaseController(object):
             if not item.price_history:
                 item.price_history = [{'price': item.price, 'date': item.last_update}]
 
-            self.db.delete('special_item', {'id': item.id})
+            self.db.delete('special_item', {'id': item.id}, multiple=True)
             self.db.save(item.to_json(), 'special_item')
 
         except (DatabaseRecordNotFound, DatabaseEmptyResult):
