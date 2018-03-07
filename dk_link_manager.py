@@ -10,7 +10,11 @@ url = sys.argv[2]
 name = sys.argv[1]
 
 if 'searchapi' not in url.lower():
-    before_qry_str, after_qry_str = url.split('?')
+    if '?' in url:
+        before_qry_str, after_qry_str = url.split('?')
+    else:
+        before_qry_str, after_qry_str = url, ""
+
     url_to_get = 'https://www.digikala.com/api/Search/{}'.format(before_qry_str.split("/")[-1])
     req_res = requests.get(url_to_get)
     res_json = req_res.json()
