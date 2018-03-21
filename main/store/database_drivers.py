@@ -54,7 +54,7 @@ class MongoDatabase(DocumentDatabaseBase):
             raise DatabaseNotFound('The database you requested was not found: {}'.format(db))
 
         if username is not None:
-            x = self._mongo_db.authenticate(username, passw, source='admin')
+            x = self._mongo_db.authenticate(username, passw)
             pass
 
     def save(self, doc, doc_type, multiple=False):
